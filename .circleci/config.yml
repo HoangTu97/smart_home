@@ -1,39 +1,31 @@
-# iOS CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/ios-migrating-from-1-2/ for more details
-#
 version: 2
 jobs:
   build:
-
-    # Specify the Xcode version to use
-    macos:
-      xcode: "8.3.3"
-
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-25-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-
-      # Install CocoaPods
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+#      - run:
+#         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+#         command: sudo chmod +x ./gradlew
       - run:
-          name: Install CocoaPods
-          command: pod install
-
-      # Build the app and run tests
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Build and run tests
-          command: fastlane scan
-          environment:
-            SCAN_DEVICE: iPhone 6
-            SCAN_SCHEME: WebTests
-
-      # Collect XML test results data to show in the UI,
-      # and save the same XML files under test-results folder
-      # in the Artifacts tab
-      - store_test_results:
-          path: test_output/report.xml
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: scan-test-results
-      - store_artifacts:
-          path: ~/Library/Logs/scan
-          destination: scan-logs
+          name: Run Tests
+          command: ./gradlew lint test
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
+          path: app/build/reports
+          destination: reports
+      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: app/build/test-results
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
