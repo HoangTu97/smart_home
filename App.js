@@ -8,6 +8,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import { BleManager } from 'react-native-ble-plx';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -18,32 +19,127 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  constructor() {
+    super();
+    this.manager = new BleManager();
+    this.state = {info: "", values: {}}
+    this.prefixUUID = "f000aa"
+    this.suffixUUID = "-0451-4000-b000-000000000000"
+    this.sensors = {
+      0: "Temperature",
+      1: "Accelerometer",
+      2: "Humidity",
+      3: "Magnetometer",
+      4: "Barometer",
+      5: "Gyroscope"
+    }
+}
+
+serviceUUID(num) {
+  return this.prefixUUID + num + "0" + this.suffixUUID
+}
+
+notifyUUID(num) {
+  return this.prefixUUID + num + "1" + this.suffixUUID
+}
+
+writeUUID(num) {
+  return this.prefixUUID + num + "2" + this.suffixUUID
+}
+
+info(message) {
+  this.setState({info: message})
+}
+
+error(message) {
+  this.setState({info: "ERROR: " + message})
+}
+
+updateValue(key, value) {
+  this.setState({values: {...this.state.values, [key]: value}})
+}
+
+componentWillMount() {
+  const subscription = this.manager.onStateChange((state) => {
+      if (state === 'PoweredOn') {
+          this.scanAndConnect();
+          subscription.remove();
+      }
+  }, true);
+}
+
+scanAndConnect() {
+  this.manager.startDeviceScan(null, null, (error, device) => {
+    this.info("Scanning...")
+      console.log('----------'+device.name)
+
+      if (error) {
+          // Handle error (scanning will be stopped automatically)
+          return
+      }
+
+      // Check if it is a device you are looking for based on advertisement data
+      // or other criteria.
+      if (device.name === 'TI BLE Sensor Tag' || 
+          device.name === 'SensorTag'||
+          device.name === '6S') {
+            this.info("Sensor")
+          
+          // Stop scanning as it's not necessary if you are scanning for one device.
+          this.manager.stopDeviceScan();
+
+          // Proceed with connection.
+          device.connect()
+          .then((device) => {
+            this.info("Discovering services and characteristics")
+            return device.discoverAllServicesAndCharacteristics()
+          })
+          .then((device) => {
+            // Do work on device with services and characteristics
+            this.info("Setting notifications")
+            return this.setupNotifications(device)
+          })
+          .then(() => {
+            this.info("Listening...")
+          })
+          .catch((error) => {
+              // Handle errors
+              this.error(error.message)
+          });
+      }
+  });
+}
+
+async setupNotifications(device) {
+  for (const id in this.sensors) {
+    const service = this.serviceUUID(id)
+    const characteristicW = this.writeUUID(id)
+    const characteristicN = this.notifyUUID(id)
+
+    const characteristic = await device.writeCharacteristicWithResponseForService(
+      service, characteristicW, "AQ==" /* 0x01 in hex */
+    )
+
+    device.monitorCharacteristicForService(service, characteristicN, (error, characteristic) => {
+      if (error) {
+        this.error(error.message)
+        return
+      }
+      this.updateValue(characteristic.uuid, characteristic.value)
+    })
+  }
+}
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+      <View style={{marginTop: 20}}>
+        <Text>{this.state.info}</Text>
+        {Object.keys(this.sensors).map((key) => {
+          return <Text key={key}>
+                   {this.sensors[key] + ": " + (this.state.values[this.notifyUUID(key)] || "-")}
+                 </Text>
+        })}
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
