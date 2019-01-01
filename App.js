@@ -7,8 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import { BleManager } from 'react-native-ble-plx';
+import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { BleManager, LogLevel } from 'react-native-ble-plx';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -17,12 +17,11 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
   constructor() {
     super();
     this.manager = new BleManager();
-    this.state = {info: "", values: {}}
+    this.state = {info: "", values: {}, devices: []}
     this.prefixUUID = "f000aa"
     this.suffixUUID = "-0451-4000-b000-000000000000"
     this.sensors = {
@@ -62,6 +61,7 @@ updateValue(key, value) {
 componentWillMount() {
   const subscription = this.manager.onStateChange((state) => {
       if (state === 'PoweredOn') {
+          this.manager.setLogLevel(LogLevel.Verbose)
           this.scanAndConnect();
           subscription.remove();
       }
@@ -70,8 +70,8 @@ componentWillMount() {
 
 scanAndConnect() {
   this.manager.startDeviceScan(null, null, (error, device) => {
-    this.info("Scanning...")
-      console.log('----------'+device.name)
+      this.info("Scanning...")
+      this.setState({devices: [...this.state.devices, device.name]})
 
       if (error) {
           // Handle error (scanning will be stopped automatically)
@@ -80,9 +80,7 @@ scanAndConnect() {
 
       // Check if it is a device you are looking for based on advertisement data
       // or other criteria.
-      if (device.name === 'TI BLE Sensor Tag' || 
-          device.name === 'SensorTag'||
-          device.name === '6S') {
+      if (device.name === "6S") {
             this.info("Sensor")
           
           // Stop scanning as it's not necessary if you are scanning for one device.
@@ -132,11 +130,14 @@ async setupNotifications(device) {
 
   render() {
     return (
-      <View style={{marginTop: 20}}>
+      <View style={{marginTop: 50}}>
+        <TouchableOpacity onPress={() => {}}>
+          <Text>Scan</Text>
+        </TouchableOpacity>
         <Text>{this.state.info}</Text>
-        {Object.keys(this.sensors).map((key) => {
-          return <Text key={key}>
-                   {this.sensors[key] + ": " + (this.state.values[this.notifyUUID(key)] || "-")}
+        {this.state.devices.map((key, index) => {
+          return <Text key={index}>
+                   - {key}
                  </Text>
         })}
       </View>
