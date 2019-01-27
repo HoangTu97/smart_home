@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Button, Platform } from "react-native";
+import { Text, View, StyleSheet, Button } from "react-native";
 
 import { Bot } from 'lib/utils/Bot';
 
@@ -26,7 +26,7 @@ export default class Audio extends Component {
             <Text style={styles.transcript}>{result}</Text>
         )}
         <Button style={styles.transcript}
-        onPress={Bot.listen}
+        onPress={Bot.test}
         title="Start"></Button>
       </View>
     );
