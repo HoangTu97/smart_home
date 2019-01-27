@@ -1,49 +1,19 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, Platform } from "react-native";
 
-// extends librairy
-import Voice from 'react-native-voice';
+import { Bot } from 'lib/utils/Bot';
+
 
 export default class Audio extends Component {
   constructor(props) {
-      super(props)
-      this.state = {
-        recognized: '',
-        started: '',
-        results: [],
+    super(props);
+    this.timer = null;
+    this.state = { 
+        showText: null, 
+        results: []
     };
-          
-      Voice.onSpeechStart = this.onSpeechStart.bind(this)
-      Voice.onSpeechRecognized = this.onSpeechRecognized.bind(this)
-      Voice.onSpeechResults = this.onSpeechResults.bind(this) 
-  }
-  onSpeechStart(e) {
-    this.setState({
-      started: '√',
-    });
-  }
-  onSpeechRecognized(e) {
-    this.setState({
-      recognized: '√',
-    });
-  }
-  onSpeechResults(e) {
-    this.setState({
-      results: e.value,
-    });
-  }
 
-  async _startRecognition(e) {
-    this.setState({
-      recognized: '',
-      started: '',
-      results: [],
-    });
-    try {
-      await Voice.start('en-US');
-    } catch (e) {
-      console.error(e);
-    }
+    Bot.speak(Bot.sayHi());
   }
 
   render() {
@@ -52,10 +22,11 @@ export default class Audio extends Component {
         <Text style={styles.transcript}>
             Transcript
         </Text>
-        {this.state.results.map((result, index) => <Text style={styles.transcript}> {result}|</Text>
+        {this.state.results.map((result, index) => 
+            <Text style={styles.transcript}>{result}</Text>
         )}
         <Button style={styles.transcript}
-        onPress={this._startRecognition.bind(this)}
+        onPress={Bot.listen}
         title="Start"></Button>
       </View>
     );
