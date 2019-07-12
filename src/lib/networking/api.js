@@ -27,7 +27,7 @@ export async function getWeather(data) {
     const WEATHER_KEY = weather_key.api_key
     
     let query = Object.keys(data)
-    .filter((key) => { return data[key] !== undefined })
+    .filter((key) => { return data[key] !== undefined && key[0] !== '_' })
     .map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
     }).join('&')

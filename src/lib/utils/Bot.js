@@ -85,7 +85,7 @@ class BotAssist {
 
     test() {
         let meteor = new Meteor();
-        meteor.getWeather();
+        meteor.getMyWeather()
     }
 }
 

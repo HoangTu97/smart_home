@@ -13,7 +13,7 @@ export default class Audio extends Component {
         results: []
     };
 
-    Bot.speak(Bot.sayHi());
+    // Bot.speak(Bot.sayHi());
   }
 
   render() {
