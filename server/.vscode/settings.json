@@ -1,0 +1,13 @@
+{
+    "go.buildOnSave": "off",
+    "go.toolsGopath": "/Users/nguyenxuanhoangtu/go",
+    "go.coverOnTestPackage": false,
+    "sqltools.connections": [
+        {
+            "database": "${workspaceFolder}/src/test.db",
+            "dialect": "SQLite",
+            "name": "smartHome"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
