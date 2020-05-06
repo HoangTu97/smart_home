@@ -3,6 +3,8 @@
         {
             "database": "${workspaceFolder}/server/Services/Food/src/test.db",
             "dialect": "SQLite",
+            "isActive": false,
+            "isConnected": false,
             "name": "test.db"
         }
     ]

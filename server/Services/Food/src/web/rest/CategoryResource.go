@@ -6,7 +6,6 @@ import (
 	"Food/service"
 	"Food/util/converter"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // CategoryResource godoc
@@ -28,11 +27,12 @@ func NewCategory(categoryService service.CategoryService) CategoryResource {
 
 func (r *categoryResource) GetByID(c *gin.Context) {
 	id := converter.MustUint(c.Param("id"))
-	categoryDTO := r.categoryService.FindOne(id)
-	if categoryDTO.ID == 0 {
+	categoryDTO, isExist := r.categoryService.FindOne(id)
+	if !isExist {
 		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
 		return
 	}
+
 	response.CreateSuccesResponse(c, &category.CategoryDetailResponseDTO{
 		ID:    categoryDTO.ID,
 		Name:  categoryDTO.Name,
@@ -41,5 +41,14 @@ func (r *categoryResource) GetByID(c *gin.Context) {
 }
 
 func (r *categoryResource) GetNameByID(c *gin.Context) {
-	c.JSON(http.StatusOK, &category.CategoryNameResponseDTO{})
+	id := converter.MustUint(c.Param("id"))
+	categoryDTO, isExist := r.categoryService.FindOne(id)
+	if !isExist {
+		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
+		return
+	}
+
+	response.CreateSuccesResponse(c, &category.CategoryNameResponseDTO{
+		Name:  categoryDTO.Name,
+	})
 }

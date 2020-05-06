@@ -8,8 +8,8 @@ import (
 
 // CategoryService ...
 type CategoryService interface {
-	Save(categoryDTO dto.CategoryDTO) dto.CategoryDTO
-	FindOne(id uint) dto.CategoryDTO
+	Save(categoryDTO dto.CategoryDTO) (dto.CategoryDTO, bool)
+	FindOne(id uint) (dto.CategoryDTO, bool)
 	FindAll() []dto.CategoryDTO
 	Delete(id uint) bool
 }
@@ -27,15 +27,22 @@ func NewCategory(categoryRepository repository.CategoryRepository, categoryMappe
 	}
 }
 
-func (s *categoryService) Save(categoryDTO dto.CategoryDTO) dto.CategoryDTO {
+func (s *categoryService) Save(categoryDTO dto.CategoryDTO) (dto.CategoryDTO, bool) {
 	category := s.categoryMapper.ToEntity(categoryDTO)
-	category = s.categoryRepository.Save(category)
-	return s.categoryMapper.ToDTO(category)
+	var err error
+	category, err = s.categoryRepository.Save(category)
+	if err != nil {
+		return categoryDTO, false
+	}
+	return s.categoryMapper.ToDTO(category), true
 }
 
-func (s *categoryService) FindOne(id uint) dto.CategoryDTO {
-	category := s.categoryRepository.FindOne(id)
-	return s.categoryMapper.ToDTO(category)
+func (s *categoryService) FindOne(id uint) (dto.CategoryDTO, bool) {
+	category, err := s.categoryRepository.FindOne(id)
+	if err != nil {
+		return dto.CategoryDTO{}, false
+	}
+	return s.categoryMapper.ToDTO(category), true
 }
 
 func (s *categoryService) FindAll() []dto.CategoryDTO {
@@ -44,8 +51,8 @@ func (s *categoryService) FindAll() []dto.CategoryDTO {
 }
 
 func (s *categoryService) Delete(id uint) bool {
-	category := s.categoryRepository.FindOne(id)
-	if category.ID == 0 {
+	category, err := s.categoryRepository.FindOne(id)
+	if err != nil {
 		return false
 	}
 	s.categoryRepository.Delete(category)

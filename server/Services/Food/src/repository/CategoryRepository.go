@@ -7,10 +7,10 @@ import (
 
 // CategoryRepository godoc
 type CategoryRepository interface {
-	Save(category entity.Category) entity.Category
-	FindOne(id uint) entity.Category
+	Save(category entity.Category) (entity.Category, error)
+	FindOne(id uint) (entity.Category, error)
 	FindAll() []entity.Category
-	Delete(category entity.Category)
+	Delete(category entity.Category) error
 }
 
 type categoryRepository struct {
@@ -24,15 +24,21 @@ func NewCategory(db *gorm.DB) CategoryRepository {
 	}
 }
 
-func (r *categoryRepository) Save(category entity.Category) entity.Category {
-	r.connection.Save(&category)
-	return category
+func (r *categoryRepository) Save(category entity.Category) (entity.Category, error) {
+	result := r.connection.Save(&category)
+	if result.Error != nil {
+		return entity.Category{}, result.Error
+	}
+	return category, nil
 }
 
-func (r *categoryRepository) FindOne(id uint) entity.Category {
+func (r *categoryRepository) FindOne(id uint) (entity.Category, error) {
 	var category entity.Category
-	r.connection.First(&category, id)
-	return category
+	result := r.connection.First(&category, id)
+	if result.Error != nil {
+		return entity.Category{}, result.Error
+	}
+	return category, nil
 }
 
 func (r *categoryRepository) FindAll() []entity.Category {
@@ -41,6 +47,10 @@ func (r *categoryRepository) FindAll() []entity.Category {
 	return categories
 }
 
-func (r *categoryRepository) Delete(category entity.Category) {
-	r.connection.Delete(&category)
+func (r *categoryRepository) Delete(category entity.Category) error {
+	result := r.connection.Delete(&category)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }

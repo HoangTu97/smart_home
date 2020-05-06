@@ -2,5 +2,7 @@ GET http://localhost:8080/api/public/food/list
 ###
 GET http://localhost:8080/api/public/food/detail/1
 ###
-GET http://localhost:8080/api/public/category/detail/1
+GET http://localhost:8080/api/public/category/detail/4
+###
+GET http://localhost:8080/api/public/category/detail/5
 ###
