@@ -1,22 +1,33 @@
 package config
 
 import (
-	"Food/service"
 	"Food/repository"
-	"Food/web/rest"
+	"Food/service"
 	"Food/service/mapper"
+	"Food/web/rest"
 )
 
 var (
-	FoodResource rest.FoodResource
+	RecipeResource     rest.RecipeResource
+	CategoryResource   rest.CategoryResource
+	IngredientResource rest.IngredientResource
 )
 
+// InitResource godoc
 func InitResource() {
-	foodMapper := mapper.New()
+	recipeMapper := mapper.NewRecipe()
+	categoryMapper := mapper.NewCategory()
+	ingredientMapper := mapper.NewIngredient()
 
-	foodRepository := repository.New(DB)
+	recipeRepository := repository.NewRecipe(DB)
+	categoryRepository := repository.NewCategory(DB)
+	ingredientRepository := repository.NewIngredient(DB)
 
-	foodService := service.New(foodRepository, foodMapper)
+	recipeService := service.NewRecipe(recipeRepository, recipeMapper)
+	categoryService := service.NewCategory(categoryRepository, categoryMapper)
+	ingredientService := service.NewIngredient(ingredientRepository, ingredientMapper)
 
-	FoodResource = rest.New(foodService)
+	RecipeResource = rest.NewRecipe(recipeService)
+	CategoryResource = rest.NewCategory(categoryService)
+	IngredientResource = rest.NewIngredient(ingredientService)
 }

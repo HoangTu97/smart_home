@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetupRoutes godoc
 func SetupRoutes() {
 	gin.SetMode(ServerSetting.RunMode)
 	gin.ForceConsoleColor()
@@ -17,11 +18,40 @@ func SetupRoutes() {
 	{
 		publicRoutes := apiRoutes.Group("/public")
 		{
-			publicFoodRoutes := publicRoutes.Group("/food")
+			publicCategoryRoutes := publicRoutes.Group("/category")
 			{
-				publicFoodRoutes.GET("/list", FoodResource.GetListFoods)
-				publicFoodRoutes.GET("/detail/:id", FoodResource.GetFoodDetail)
+				publicCategoryRoutes.GET("/detail/:id", CategoryResource.GetByID)
+				publicCategoryRoutes.GET("/getName/:id", CategoryResource.GetNameByID)
 			}
+
+			publicRecipeRoutes := publicRoutes.Group("/recipe")
+			{
+				publicRecipeRoutes.GET("/getByCategory/:categoryId", RecipeResource.GetByCategory)
+				publicRecipeRoutes.GET("/countByCategory/:categoryId", RecipeResource.GetCountByCategory)
+				publicRecipeRoutes.GET("/getByIngredient/:ingredientId", RecipeResource.GetByIngredient)
+				publicRecipeRoutes.GET("/searchByIngredientName", RecipeResource.GetByIngredientName)
+				publicRecipeRoutes.GET("/searchByCategoryName", RecipeResource.GetByCategoryName)
+				publicRecipeRoutes.GET("/searchByRecipeName", RecipeResource.GetByRecipeName)
+			}
+
+			publicIngredientRoutes := publicRoutes.Group("/ingredient")
+			{
+				publicIngredientRoutes.GET("/getName/:id", IngredientResource.GetNameByID)
+				publicIngredientRoutes.GET("/getImage/:id", IngredientResource.GetImageByID)
+				publicIngredientRoutes.GET("/searchIngredients", IngredientResource.GetByRecipeName)
+			}
+
+			// getCategoryById(categoryId)
+			// getCategoryName(categoryId)
+			// getIngredientName(ingredientID)
+			// getIngredientUrl(ingredientID)
+			// getAllIngredients(idArray)
+			// getRecipes(categoryId)
+			// getRecipesByIngredient(ingredientId)
+			// getNumberOfRecipes(categoryId)
+			// getRecipesByIngredientName(ingredientName)
+			// getRecipesByCategoryName(categoryName)
+			// getRecipesByRecipeName(recipeName)
 		}
 	}
 

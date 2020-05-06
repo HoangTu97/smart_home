@@ -1,8 +1,8 @@
 package config
 
 import (
+	"Food/util/converter"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -59,7 +59,7 @@ var (
 
 func LoadAppProperties() {
 	AppSetting = &App{
-		PageSize:        atoi(os.Getenv("PAGE_SIZE")),
+		PageSize:        converter.MustInt(os.Getenv("PAGE_SIZE")),
 		JwtSecret:       os.Getenv("JWT_SECRET"),
 		RuntimeRootPath: os.Getenv("RUNTIME_ROOT_PATH"),
 		LogSavePath:     os.Getenv("LOG_SAVE_PATH"),
@@ -71,8 +71,8 @@ func LoadAppProperties() {
 	ServerSetting = &Server{
 		RunMode:      os.Getenv("RUN_MODE"),
 		HTTPPort:     os.Getenv("HTTP_PORT"),
-		ReadTimeout:  time.Duration(parseInt(os.Getenv("READ_TIMEOUT"))),
-		WriteTimeout: time.Duration(parseInt(os.Getenv("WRITE_TIMEOUT"))),
+		ReadTimeout:  time.Duration(converter.MustInt64(os.Getenv("READ_TIMEOUT"))),
+		WriteTimeout: time.Duration(converter.MustInt64(os.Getenv("WRITE_TIMEOUT"))),
 	}
 
 	DatabaseSetting = &Database{
@@ -88,10 +88,10 @@ func LoadAppProperties() {
 		Host:        os.Getenv("REDIS_HOST"),
 		Port:        os.Getenv("REDIS_PORT"),
 		Password:    os.Getenv("REDIS_PASSWORD"),
-		SSL:         parseBool(os.Getenv("REDIS_SSL")),
-		MaxIdle:     atoi(os.Getenv("REDIS_MAX_IDLE")),
-		MaxActive:   atoi(os.Getenv("REDIS_MAX_ACTIVE")),
-		IdleTimeout: time.Duration(parseInt(os.Getenv("REDIS_TIMEOUT"))),
+		SSL:         converter.MustBool(os.Getenv("REDIS_SSL")),
+		MaxIdle:     converter.MustInt(os.Getenv("REDIS_MAX_IDLE")),
+		MaxActive:   converter.MustInt(os.Getenv("REDIS_MAX_ACTIVE")),
+		IdleTimeout: time.Duration(converter.MustInt64(os.Getenv("REDIS_TIMEOUT"))),
 	}
 
 	RabbitMQSetting = &RabbitMQ{
@@ -100,28 +100,4 @@ func LoadAppProperties() {
 		User:     os.Getenv("RABBITMQ_USER"),
 		Password: os.Getenv("RABBITMQ_PASSWORD"),
 	}
-}
-
-func atoi(s string) int {
-	value, err := strconv.Atoi(s)
-	if err != nil {
-		return 0
-	}
-	return value
-}
-
-func parseInt(s string) int64 {
-	value, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		return 0
-	}
-	return value
-}
-
-func parseBool(s string) bool {
-	value, err := strconv.ParseBool(s)
-	if err != nil {
-		return false
-	}
-	return value
 }

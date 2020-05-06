@@ -1,16 +1,19 @@
 package entity
 
 import (
-	"github.com/jinzhu/gorm"
+	"time"
 )
 
 // Ingredients entity
 type Ingredients struct {
-	gorm.Model
-	Name        string `gorm:"type:varchar(255)"`
-	Description string `gorm:"type:text"`
-	// Type     string `gorm:"type:""`
-	Quantity uint32
+	ID           uint `gorm:"primary_key"`
+	RecipeID     uint
+	Recipe       Recipe
+	IngredientID uint
+	Ingredient   Ingredient
+	Quantity     uint32
 
-	FoodID uint
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
 }
