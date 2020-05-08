@@ -5,31 +5,31 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// IngredientsRepository godoc
-type IngredientsRepository interface {
-	FindAll() []entity.Ingredients
-	FindOne(id uint) entity.Ingredients
+// RecipeIngredientsRepository godoc
+type RecipeIngredientsRepository interface {
+	FindAll() []entity.RecipeIngredients
+	FindOne(id uint) entity.RecipeIngredients
 }
 
-type ingredientsRepository struct {
+type recipeIngredientsRepository struct {
 	connection *gorm.DB
 }
 
-// NewIngredients godoc
-func NewIngredients(db *gorm.DB) IngredientsRepository {
-	return &ingredientsRepository{
+// NewRecipeIngredients godoc
+func NewRecipeIngredients(db *gorm.DB) RecipeIngredientsRepository {
+	return &recipeIngredientsRepository{
 		connection: db,
 	}
 }
 
-func (r *ingredientsRepository) FindAll() []entity.Ingredients {
-	var ingredientsLst []entity.Ingredients
-	r.connection.Find(&ingredientsLst)
-	return ingredientsLst
+func (r *recipeIngredientsRepository) FindAll() []entity.RecipeIngredients {
+	var RecipeIngredientsLst []entity.RecipeIngredients
+	r.connection.Find(&RecipeIngredientsLst)
+	return RecipeIngredientsLst
 }
 
-func (r *ingredientsRepository) FindOne(id uint) entity.Ingredients {
-	var ingredients entity.Ingredients
-	r.connection.Where("id = ?", id).Find(&ingredients)
-	return ingredients
+func (r *recipeIngredientsRepository) FindOne(id uint) entity.RecipeIngredients {
+	var RecipeIngredients entity.RecipeIngredients
+	r.connection.Where("id = ?", id).Find(&RecipeIngredients)
+	return RecipeIngredients
 }

@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// Ingredients entity
-type Ingredients struct {
+// RecipeIngredients entity
+type RecipeIngredients struct {
 	ID           uint `gorm:"primary_key"`
 	RecipeID     uint
 	Recipe       Recipe

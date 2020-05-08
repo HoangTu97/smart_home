@@ -1,9 +1,10 @@
 package rest
 
 import (
-	"net/http"
-	// "Food/util/pagination"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"Food/util/converter"
+	"Food/util/pagination"
 	"Food/service"
 )
 
@@ -29,8 +30,9 @@ func NewRecipe(recipeService service.RecipeService) RecipeResource {
 }
 
 func (r *recipeResource) GetByCategory(c *gin.Context) {
-	// page, size := pagination.GetPage(c)
-	// r.recipeService
+	pageable := pagination.GetPage(c)
+	id := converter.MustUint(c.Param("cateId"))
+	r.recipeService.FindPageByCateID(id, pageable)
 	c.JSON(http.StatusOK, nil)
 }
 
