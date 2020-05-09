@@ -1,11 +1,11 @@
 package rest
 
 import (
+	"github.com/gin-gonic/gin"
 	"Food/dto/response"
 	"Food/dto/response/category"
 	"Food/service"
 	"Food/util/converter"
-	"github.com/gin-gonic/gin"
 )
 
 // CategoryResource godoc

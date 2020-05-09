@@ -12,6 +12,7 @@ type RecipeMapper interface {
 	ToEntity(dto dto.RecipeDTO) entity.Recipe
 	ToDTOS(entityList []entity.Recipe) []dto.RecipeDTO
 	ToEntities(dtoList []dto.RecipeDTO) []entity.Recipe
+	ToDTOSInterfaceFromEntitiesInterface(interfaces []interface{}) []interface{}
 }
 
 type recipeMapper struct{}
@@ -50,21 +51,31 @@ func (mapper *recipeMapper) ToEntity(dto dto.RecipeDTO) entity.Recipe {
 }
 
 func (mapper *recipeMapper) ToDTOS(entityList []entity.Recipe) []dto.RecipeDTO {
-	dtos := []dto.RecipeDTO{}
+	dtos := make([]dto.RecipeDTO, len(entityList))
 
-	for _, entity := range entityList {
-		dtos = append(dtos, mapper.ToDTO(entity))
+	for i, entity := range entityList {
+		dtos[i] = mapper.ToDTO(entity)
 	}
 
 	return dtos
 }
 
 func (mapper *recipeMapper) ToEntities(dtoList []dto.RecipeDTO) []entity.Recipe {
-	entities := []entity.Recipe{}
+	entities := make([]entity.Recipe, len(dtoList))
 
-	for _, dto := range dtoList {
-		entities = append(entities, mapper.ToEntity(dto))
+	for i, dto := range dtoList {
+		entities[i] = mapper.ToEntity(dto)
 	}
 
 	return entities
+}
+
+func (mapper *recipeMapper) ToDTOSInterfaceFromEntitiesInterface(interfaces []interface{}) []interface{} {
+	dtos := make([]interface{}, len(interfaces))
+
+	for i, inter := range interfaces {
+		dtos[i] = mapper.ToDTO(inter.(entity.Recipe))
+	}
+
+	return dtos
 }

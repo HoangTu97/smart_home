@@ -1,6 +1,7 @@
 package service
 
 import (
+	// "Food/entity"
 	"Food/util/page"
 	"Food/util/pagination"
 	"Food/repository"
@@ -25,6 +26,7 @@ func NewRecipe(recipeRepository repository.RecipeRepository, recipeMapper mapper
 	}
 }
 
+// FindPageByCateID return page entity.Recipe
 func (s *recipeService) FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page {
-	return nil
+	return s.recipeRepository.FindPageByCateID(cateID, pageable)
 }

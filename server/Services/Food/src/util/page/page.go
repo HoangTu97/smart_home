@@ -4,14 +4,14 @@ package page
 type Page interface {
 	IsEmpty() bool
 	GetTotalElements() int
-	GetTotalPages() int
+	GetTotalItems() int
 	GetContent() []interface{}
 }
 
 type page struct {
 	content       []interface{}
 	totalElements int
-	totalPages    int
+	totalItems    int
 }
 
 // Empty create empty page
@@ -19,16 +19,16 @@ func Empty() Page {
 	return &page{
 		content:       make([]interface{}, 0),
 		totalElements: 0,
-		totalPages:    0,
+		totalItems:    0,
 	}
 }
 
 // From create page from data
-func From(content []interface{}, totalPages int) Page {
+func From(content []interface{}, totalItems int) Page {
 	return &page{
 		content:       content,
 		totalElements: len(content),
-		totalPages:    totalPages,
+		totalItems:    totalItems,
 	}
 }
 
@@ -40,8 +40,8 @@ func (p *page) GetTotalElements() int {
 	return p.totalElements
 }
 
-func (p *page) GetTotalPages() int {
-	return p.totalPages
+func (p *page) GetTotalItems() int {
+	return p.totalItems
 }
 
 func (p *page) GetContent() []interface{} {

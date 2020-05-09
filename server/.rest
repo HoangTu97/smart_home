@@ -6,3 +6,4 @@ GET http://localhost:8080/api/public/category/detail/4
 ###
 GET http://localhost:8080/api/public/category/detail/5
 ###
+GET http://localhost:8080/api/public/recipe/getByCategory/1

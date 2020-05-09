@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"Food/util/page"
 	"Food/util/pagination"
 	"Food/entity"
 	"github.com/jinzhu/gorm"
@@ -10,7 +11,7 @@ import (
 type RecipeRepository interface {
 	FindAll() []entity.Recipe
 	FindOne(id uint) entity.Recipe
-	FindPageByCateID(id uint, pageable pagination.Pageable) *pagination.Paginator
+	FindPageByCateID(id uint, pageable pagination.Pageable) page.Page
 }
 
 type recipeRepository struct {
@@ -36,14 +37,24 @@ func (r *recipeRepository) FindOne(id uint) entity.Recipe {
 	return recipe
 }
 
-func (r *recipeRepository) FindPageByCateID(id uint, pageable pagination.Pageable) *pagination.Paginator {
+func (r *recipeRepository) FindPageByCateID(id uint, pageable pagination.Pageable) page.Page {
 	var recipes []entity.Recipe
+
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      r.connection,
+        DB:      r.connection.Model(&entity.Category{ID: id}).Related(&recipes, "Recipes"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
         ShowSQL: true,
-    }, &recipes)
-    return paginator
+	}, &recipes)
+
+    return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func toInterfacesFromRecipes(recipes []entity.Recipe) []interface{} {
+	content := make([]interface{}, len(recipes))
+	for i, v := range recipes {
+		content[i] = v
+	}
+	return content
 }

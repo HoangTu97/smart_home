@@ -1,11 +1,14 @@
 package rest
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
+	"Food/dto/response"
+	"Food/dto/response/recipe"
+	"Food/entity"
+	"Food/service"
 	"Food/util/converter"
 	"Food/util/pagination"
-	"Food/service"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // RecipeResource godoc
@@ -19,21 +22,31 @@ type RecipeResource interface {
 }
 
 type recipeResource struct {
-	recipeService service.RecipeService
+	recipeService   service.RecipeService
+	categoryService service.CategoryService
 }
 
 // NewRecipe godoc
-func NewRecipe(recipeService service.RecipeService) RecipeResource {
+func NewRecipe(recipeService service.RecipeService, categoryService service.CategoryService) RecipeResource {
 	return &recipeResource{
-		recipeService: recipeService,
+		recipeService:   recipeService,
+		categoryService: categoryService,
 	}
 }
 
 func (r *recipeResource) GetByCategory(c *gin.Context) {
 	pageable := pagination.GetPage(c)
-	id := converter.MustUint(c.Param("cateId"))
-	r.recipeService.FindPageByCateID(id, pageable)
-	c.JSON(http.StatusOK, nil)
+	id := converter.MustUint(c.Param("categoryId"))
+
+	_, isExist := r.categoryService.FindOne(id)
+	if !isExist {
+		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
+		return
+	}
+
+	page := r.recipeService.FindPageByCateID(id, pageable)
+
+	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }
 
 func (r *recipeResource) GetCountByCategory(c *gin.Context) {
@@ -55,4 +68,3 @@ func (r *recipeResource) GetByCategoryName(c *gin.Context) {
 func (r *recipeResource) GetByRecipeName(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
-

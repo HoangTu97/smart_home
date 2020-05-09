@@ -27,7 +27,7 @@ func InitResource() {
 	categoryService := service.NewCategory(categoryRepository, categoryMapper)
 	ingredientService := service.NewIngredient(ingredientRepository, ingredientMapper)
 
-	RecipeResource = rest.NewRecipe(recipeService)
+	RecipeResource = rest.NewRecipe(recipeService, categoryService)
 	CategoryResource = rest.NewCategory(categoryService)
 	IngredientResource = rest.NewIngredient(ingredientService)
 }
