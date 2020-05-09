@@ -11,6 +11,7 @@ import (
 // RecipeService godoc
 type RecipeService interface {
 	FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page
+	CountByCateID(cateID uint) int
 }
 
 type recipeService struct {
@@ -29,4 +30,8 @@ func NewRecipe(recipeRepository repository.RecipeRepository, recipeMapper mapper
 // FindPageByCateID return page entity.Recipe
 func (s *recipeService) FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page {
 	return s.recipeRepository.FindPageByCateID(cateID, pageable)
+}
+
+func (s *recipeService) CountByCateID(cateID uint) int {
+	return s.recipeRepository.CountByCateID(cateID)
 }

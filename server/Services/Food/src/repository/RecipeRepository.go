@@ -11,7 +11,8 @@ import (
 type RecipeRepository interface {
 	FindAll() []entity.Recipe
 	FindOne(id uint) entity.Recipe
-	FindPageByCateID(id uint, pageable pagination.Pageable) page.Page
+	FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page
+	CountByCateID(cateID uint) int
 }
 
 type recipeRepository struct {
@@ -37,11 +38,11 @@ func (r *recipeRepository) FindOne(id uint) entity.Recipe {
 	return recipe
 }
 
-func (r *recipeRepository) FindPageByCateID(id uint, pageable pagination.Pageable) page.Page {
+func (r *recipeRepository) FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page {
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      r.connection.Model(&entity.Category{ID: id}).Related(&recipes, "Recipes").Preload("Categories"),
+        DB:      r.connection.Model(&entity.Category{ID: cateID}).Related(&recipes, "Recipes").Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -49,6 +50,12 @@ func (r *recipeRepository) FindPageByCateID(id uint, pageable pagination.Pageabl
 	}, &recipes)
 
     return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func (r *recipeRepository) CountByCateID(cateID uint) int {
+	var result int
+	r.connection.Table("cate_recipes").Where("category_id = ?", cateID).Count(&result)
+	return result
 }
 
 func toInterfacesFromRecipes(recipes []entity.Recipe) []interface{} {

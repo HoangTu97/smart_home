@@ -49,7 +49,18 @@ func (r *recipeResource) GetByCategory(c *gin.Context) {
 }
 
 func (r *recipeResource) GetCountByCategory(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
+	id := converter.MustUint(c.Param("categoryId"))
+
+	_, isExist := r.categoryService.FindOne(id)
+	if !isExist {
+		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
+		return
+	}
+
+	result := r.recipeService.CountByCateID(id)
+	response.CreateSuccesResponse(c, &recipe.RecipeCountByCateResponseDTO{
+		Value: result,
+	})
 }
 
 func (r *recipeResource) GetByIngredient(c *gin.Context) {
