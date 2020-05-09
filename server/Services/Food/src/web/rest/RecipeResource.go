@@ -3,7 +3,6 @@ package rest
 import (
 	"Food/dto/response"
 	"Food/dto/response/recipe"
-	"Food/entity"
 	"Food/service"
 	"Food/util/converter"
 	"Food/util/pagination"

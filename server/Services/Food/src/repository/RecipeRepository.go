@@ -41,7 +41,7 @@ func (r *recipeRepository) FindPageByCateID(id uint, pageable pagination.Pageabl
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      r.connection.Model(&entity.Category{ID: id}).Related(&recipes, "Recipes"),
+        DB:      r.connection.Model(&entity.Category{ID: id}).Related(&recipes, "Recipes").Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
