@@ -9,3 +9,7 @@ GET http://localhost:8080/api/public/category/detail/5
 GET http://localhost:8080/api/public/recipe/getByCategory/1
 ###
 GET http://localhost:8080/api/public/recipe/countByCategory/1
+###
+GET http://localhost:8080/api/public/recipe/searchByCategoryName?name=Food
+###
+GET http://localhost:8080/api/public/recipe/searchByRecipeName?name=a

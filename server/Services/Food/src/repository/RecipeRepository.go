@@ -12,6 +12,8 @@ type RecipeRepository interface {
 	FindAll() []entity.Recipe
 	FindOne(id uint) entity.Recipe
 	FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page
+	FindPageByCates(cates []entity.Category, pageable pagination.Pageable) page.Page
+	FindPageByName(name string, pageable pagination.Pageable) page.Page
 	CountByCateID(cateID uint) int
 }
 
@@ -43,6 +45,34 @@ func (r *recipeRepository) FindPageByCateID(cateID uint, pageable pagination.Pag
 
 	paginator := pagination.Paging(&pagination.Param{
         DB:      r.connection.Model(&entity.Category{ID: cateID}).Related(&recipes, "Recipes").Preload("Categories"),
+        Page:    pageable.GetPageNumber(),
+        Limit:   pageable.GetPageSize(),
+        OrderBy: []string{"id desc"},
+        ShowSQL: true,
+	}, &recipes)
+
+    return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func (r *recipeRepository) FindPageByCates(cates []entity.Category, pageable pagination.Pageable) page.Page {
+	var recipes []entity.Recipe
+
+	paginator := pagination.Paging(&pagination.Param{
+        DB:      r.connection.Model(&cates).Related(&recipes, "Recipes").Preload("Categories"),
+        Page:    pageable.GetPageNumber(),
+        Limit:   pageable.GetPageSize(),
+        OrderBy: []string{"id desc"},
+        ShowSQL: true,
+	}, &recipes)
+
+    return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func (r *recipeRepository) FindPageByName(name string, pageable pagination.Pageable) page.Page {
+	var recipes []entity.Recipe
+
+	paginator := pagination.Paging(&pagination.Param{
+        DB:      r.connection.Where("name LIKE ?", "%" + name + "%").Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},

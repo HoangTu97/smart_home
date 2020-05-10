@@ -1,7 +1,7 @@
 package service
 
 import (
-	// "Food/entity"
+	"Food/entity"
 	"Food/util/page"
 	"Food/util/pagination"
 	"Food/repository"
@@ -11,6 +11,8 @@ import (
 // RecipeService godoc
 type RecipeService interface {
 	FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page
+	FindPageByCates(cates []entity.Category, pageable pagination.Pageable) page.Page
+	FindPageByName(name string, pageable pagination.Pageable) page.Page
 	CountByCateID(cateID uint) int
 }
 
@@ -30,6 +32,14 @@ func NewRecipe(recipeRepository repository.RecipeRepository, recipeMapper mapper
 // FindPageByCateID return page entity.Recipe
 func (s *recipeService) FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page {
 	return s.recipeRepository.FindPageByCateID(cateID, pageable)
+}
+
+func (s *recipeService) FindPageByCates(cates []entity.Category, pageable pagination.Pageable) page.Page {
+	return s.recipeRepository.FindPageByCates(cates, pageable)
+}
+
+func (s *recipeService) FindPageByName(name string, pageable pagination.Pageable) page.Page {
+	return s.recipeRepository.FindPageByName(name, pageable)
 }
 
 func (s *recipeService) CountByCateID(cateID uint) int {

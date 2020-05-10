@@ -14,9 +14,9 @@ import (
 type RecipeResource interface {
 	GetByCategory(c *gin.Context)
 	GetCountByCategory(c *gin.Context)
+	GetByCategoryName(c *gin.Context)
 	GetByIngredient(c *gin.Context)
 	GetByIngredientName(c *gin.Context)
-	GetByCategoryName(c *gin.Context)
 	GetByRecipeName(c *gin.Context)
 }
 
@@ -63,6 +63,21 @@ func (r *recipeResource) GetCountByCategory(c *gin.Context) {
 	})
 }
 
+func (r *recipeResource) GetByCategoryName(c *gin.Context) {
+	pageable := pagination.GetPage(c)
+	cateName := converter.MustString(c.Query("name"))
+
+	cates, isExist := r.categoryService.FindOneByName(cateName)
+	if !isExist {
+		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
+		return
+	}
+
+	page := r.recipeService.FindPageByCates(cates, pageable)
+
+	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
+}
+
 func (r *recipeResource) GetByIngredient(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
@@ -71,10 +86,11 @@ func (r *recipeResource) GetByIngredientName(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
 
-func (r *recipeResource) GetByCategoryName(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
-}
-
 func (r *recipeResource) GetByRecipeName(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
+	pageable := pagination.GetPage(c)
+	recipeName := converter.MustString(c.Query("name"))
+
+	page := r.recipeService.FindPageByName(recipeName, pageable)
+
+	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }

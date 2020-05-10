@@ -9,6 +9,7 @@ import (
 type CategoryRepository interface {
 	Save(category entity.Category) (entity.Category, error)
 	FindOne(id uint) (entity.Category, error)
+	FindOneByName(name string) ([]entity.Category, error)
 	FindAll() []entity.Category
 	Delete(category entity.Category) error
 }
@@ -39,6 +40,15 @@ func (r *categoryRepository) FindOne(id uint) (entity.Category, error) {
 		return entity.Category{}, result.Error
 	}
 	return category, nil
+}
+
+func (r *categoryRepository) FindOneByName(name string) ([]entity.Category, error) {
+	var categories []entity.Category
+	result := r.connection.Where("name LIKE ?", "%" + name + "%").Find(&categories)
+	if result.Error != nil {
+		return []entity.Category{}, result.Error
+	}
+	return categories, nil
 }
 
 func (r *categoryRepository) FindAll() []entity.Category {
