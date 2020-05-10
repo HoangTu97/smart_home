@@ -7,7 +7,6 @@ import (
 	"Food/util/converter"
 	"Food/util/pagination"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // RecipeResource godoc
@@ -21,15 +20,17 @@ type RecipeResource interface {
 }
 
 type recipeResource struct {
-	recipeService   service.RecipeService
-	categoryService service.CategoryService
+	recipeService     service.RecipeService
+	categoryService   service.CategoryService
+	ingredientService service.IngredientService
 }
 
 // NewRecipe godoc
-func NewRecipe(recipeService service.RecipeService, categoryService service.CategoryService) RecipeResource {
+func NewRecipe(recipeService service.RecipeService, categoryService service.CategoryService, ingredientService service.IngredientService) RecipeResource {
 	return &recipeResource{
-		recipeService:   recipeService,
-		categoryService: categoryService,
+		recipeService:     recipeService,
+		categoryService:   categoryService,
+		ingredientService: ingredientService,
 	}
 }
 
@@ -67,7 +68,7 @@ func (r *recipeResource) GetByCategoryName(c *gin.Context) {
 	pageable := pagination.GetPage(c)
 	cateName := converter.MustString(c.Query("name"))
 
-	cates, isExist := r.categoryService.FindOneByName(cateName)
+	cates, isExist := r.categoryService.FindByName(cateName)
 	if !isExist {
 		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
 		return
@@ -79,11 +80,33 @@ func (r *recipeResource) GetByCategoryName(c *gin.Context) {
 }
 
 func (r *recipeResource) GetByIngredient(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
+	pageable := pagination.GetPage(c)
+	id := converter.MustUint(c.Param("ingredientId"))
+
+	_, isExist := r.ingredientService.FindOne(id)
+	if !isExist {
+		response.CreateErrorResponse(c, "INGREDIENT_NOT_FOUND")
+		return
+	}
+
+	page := r.recipeService.FindPageByIngredientID(id, pageable)
+
+	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }
 
 func (r *recipeResource) GetByIngredientName(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
+	pageable := pagination.GetPage(c)
+	ingredientName := converter.MustString(c.Query("name"))
+
+	ingredientIDs := r.ingredientService.FindIDByName(ingredientName)
+	if len(ingredientIDs) == 0 {
+		response.CreateErrorResponse(c, "INGREDIENT_NOT_FOUND")
+		return
+	}
+
+	page := r.recipeService.FindPageByIngredientIDIn(ingredientIDs, pageable)
+
+	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }
 
 func (r *recipeResource) GetByRecipeName(c *gin.Context) {

@@ -14,6 +14,8 @@ type RecipeRepository interface {
 	FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page
 	FindPageByCates(cates []entity.Category, pageable pagination.Pageable) page.Page
 	FindPageByName(name string, pageable pagination.Pageable) page.Page
+	FindPageByIngredientID(ingredientID uint, pageable pagination.Pageable) page.Page
+	FindPageByIngredientIDIn(ingredientIDs []uint, pageable pagination.Pageable) page.Page
 	CountByCateID(cateID uint) int
 }
 
@@ -73,6 +75,34 @@ func (r *recipeRepository) FindPageByName(name string, pageable pagination.Pagea
 
 	paginator := pagination.Paging(&pagination.Param{
         DB:      r.connection.Where("name LIKE ?", "%" + name + "%").Preload("Categories"),
+        Page:    pageable.GetPageNumber(),
+        Limit:   pageable.GetPageSize(),
+        OrderBy: []string{"id desc"},
+        ShowSQL: true,
+	}, &recipes)
+
+    return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func (r *recipeRepository) FindPageByIngredientID(ingredientID uint, pageable pagination.Pageable) page.Page {
+	var recipes []entity.Recipe
+
+	paginator := pagination.Paging(&pagination.Param{
+        DB:      r.connection.Where("id IN (?)", r.connection.Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id = ?", ingredientID).SubQuery()).Preload("Categories"),
+        Page:    pageable.GetPageNumber(),
+        Limit:   pageable.GetPageSize(),
+        OrderBy: []string{"id desc"},
+        ShowSQL: true,
+	}, &recipes)
+
+    return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func (r *recipeRepository) FindPageByIngredientIDIn(ingredientIDs []uint, pageable pagination.Pageable) page.Page {
+	var recipes []entity.Recipe
+
+	paginator := pagination.Paging(&pagination.Param{
+        DB:      r.connection.Where("id IN (?)", r.connection.Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id IN (?)", ingredientIDs).SubQuery()).Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},

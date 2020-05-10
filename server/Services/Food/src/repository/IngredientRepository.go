@@ -8,7 +8,8 @@ import (
 // IngredientRepository godoc
 type IngredientRepository interface {
 	FindAll() []entity.Ingredient
-	FindOne(id uint) entity.Ingredient
+	FindOne(id uint) (entity.Ingredient, error)
+	FindByName(name string) []entity.Ingredient
 }
 
 type ingredientRepository struct {
@@ -28,8 +29,17 @@ func (r *ingredientRepository) FindAll() []entity.Ingredient {
 	return ingredients
 }
 
-func (r *ingredientRepository) FindOne(id uint) entity.Ingredient {
+func (r *ingredientRepository) FindOne(id uint) (entity.Ingredient, error) {
 	var ingredient entity.Ingredient
-	r.connection.Where("id = ?", id).Find(&ingredient)
-	return ingredient
+	result := r.connection.First(&ingredient, id)
+	if result.Error != nil {
+		return entity.Ingredient{}, result.Error
+	}
+	return ingredient, nil
+}
+
+func (r *ingredientRepository) FindByName(name string) []entity.Ingredient {
+	var ingredients []entity.Ingredient
+	r.connection.Where("name LIKE ?", "%" + name + "%").Find(&ingredients)
+	return ingredients
 }

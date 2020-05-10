@@ -11,7 +11,7 @@ import (
 type CategoryService interface {
 	Save(categoryDTO dto.CategoryDTO) (dto.CategoryDTO, bool)
 	FindOne(id uint) (dto.CategoryDTO, bool)
-	FindOneByName(name string) ([]entity.Category, bool)
+	FindByName(name string) ([]entity.Category, bool)
 	FindAll() []dto.CategoryDTO
 	Delete(id uint) bool
 }
@@ -47,7 +47,7 @@ func (s *categoryService) FindOne(id uint) (dto.CategoryDTO, bool) {
 	return s.categoryMapper.ToDTO(category), true
 }
 
-func (s *categoryService) FindOneByName(name string) ([]entity.Category, bool) {
+func (s *categoryService) FindByName(name string) ([]entity.Category, bool) {
 	categories, err := s.categoryRepository.FindOneByName(name)
 	if err != nil {
 		return []entity.Category{}, false

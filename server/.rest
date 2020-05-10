@@ -13,3 +13,7 @@ GET http://localhost:8080/api/public/recipe/countByCategory/1
 GET http://localhost:8080/api/public/recipe/searchByCategoryName?name=Food
 ###
 GET http://localhost:8080/api/public/recipe/searchByRecipeName?name=a
+###
+GET http://localhost:8080/api/public/recipe/getByIngredient/1
+###
+GET http://localhost:8080/api/public/recipe/searchByIngredientName?name=b
