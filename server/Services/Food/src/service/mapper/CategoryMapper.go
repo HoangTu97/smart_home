@@ -43,20 +43,20 @@ func (mapper *categoryMapper) ToEntity(dto dto.CategoryDTO) entity.Category {
 }
 
 func (mapper *categoryMapper) ToDTOS(entityList []entity.Category) []dto.CategoryDTO {
-	dtos := []dto.CategoryDTO{}
+	dtos := make([]dto.CategoryDTO, len(entityList))
 
-	for _, entity := range entityList {
-		dtos = append(dtos, mapper.ToDTO(entity))
+	for i, v := range entityList {
+		dtos[i] = mapper.ToDTO(v)
 	}
 
 	return dtos
 }
 
 func (mapper *categoryMapper) ToEntities(dtoList []dto.CategoryDTO) []entity.Category {
-	entities := []entity.Category{}
+	entities := make([]entity.Category, len(dtoList))
 
-	for _, dto := range dtoList {
-		entities = append(entities, mapper.ToEntity(dto))
+	for i, v := range dtoList {
+		entities[i] = mapper.ToEntity(v)
 	}
 
 	return entities

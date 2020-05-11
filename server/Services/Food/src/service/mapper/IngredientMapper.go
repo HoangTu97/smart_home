@@ -45,20 +45,20 @@ func (mapper *ingredientMapper) ToEntity(dto dto.IngredientDTO) entity.Ingredien
 }
 
 func (mapper *ingredientMapper) ToDTOS(entityList []entity.Ingredient) []dto.IngredientDTO {
-	dtos := []dto.IngredientDTO{}
+	dtos := make([]dto.IngredientDTO, len(entityList))
 
-	for _, entity := range entityList {
-		dtos = append(dtos, mapper.ToDTO(entity))
+	for i, v := range entityList {
+		dtos[i] = mapper.ToDTO(v)
 	}
 
 	return dtos
 }
 
 func (mapper *ingredientMapper) ToEntities(dtoList []dto.IngredientDTO) []entity.Ingredient {
-	entities := []entity.Ingredient{}
+	entities := make([]entity.Ingredient, len(dtoList))
 
-	for _, dto := range dtoList {
-		entities = append(entities, mapper.ToEntity(dto))
+	for i, v := range dtoList {
+		entities[i] = mapper.ToEntity(v)
 	}
 
 	return entities
