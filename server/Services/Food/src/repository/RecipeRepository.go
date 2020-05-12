@@ -10,12 +10,13 @@ import (
 // RecipeRepository godoc
 type RecipeRepository interface {
 	FindAll() []entity.Recipe
-	FindOne(id uint) entity.Recipe
+	FindOne(id uint) (entity.Recipe, error)
 	FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page
 	FindPageByCates(cates []entity.Category, pageable pagination.Pageable) page.Page
 	FindPageByName(name string, pageable pagination.Pageable) page.Page
 	FindPageByIngredientID(ingredientID uint, pageable pagination.Pageable) page.Page
 	FindPageByIngredientIDIn(ingredientIDs []uint, pageable pagination.Pageable) page.Page
+	FindByName(name string) []entity.Recipe
 	CountByCateID(cateID uint) int
 }
 
@@ -36,10 +37,13 @@ func (r *recipeRepository) FindAll() []entity.Recipe {
 	return recipes
 }
 
-func (r *recipeRepository) FindOne(id uint) entity.Recipe {
+func (r *recipeRepository) FindOne(id uint) (entity.Recipe, error) {
 	var recipe entity.Recipe
-	r.connection.Where("id = ?", id).Find(&recipe)
-	return recipe
+	result := r.connection.First(&recipe, id)
+	if result.Error != nil {
+		return entity.Recipe{}, result.Error
+	}
+	return recipe, nil
 }
 
 func (r *recipeRepository) FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page {
@@ -110,6 +114,12 @@ func (r *recipeRepository) FindPageByIngredientIDIn(ingredientIDs []uint, pageab
 	}, &recipes)
 
     return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func (r *recipeRepository) FindByName(name string) []entity.Recipe {
+	var recipes []entity.Recipe
+	r.connection.Where("name LIKE ?", "%" + name + "%").Find(&recipes)
+	return recipes
 }
 
 func (r *recipeRepository) CountByCateID(cateID uint) int {

@@ -17,3 +17,7 @@ GET http://localhost:8080/api/public/recipe/searchByRecipeName?name=a
 GET http://localhost:8080/api/public/recipe/getByIngredient/1
 ###
 GET http://localhost:8080/api/public/recipe/searchByIngredientName?name=b
+### 
+GET http://localhost:8080/api/public/ingredient/searchIngredients?recipeName=o
+### 
+GET http://localhost:8080/api/public/ingredient/searchIngredientsByRecipeId?recipeId=0

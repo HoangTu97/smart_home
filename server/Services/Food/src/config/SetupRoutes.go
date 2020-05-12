@@ -39,6 +39,7 @@ func SetupRoutes() {
 				publicIngredientRoutes.GET("/getName/:id", IngredientResource.GetNameByID)
 				publicIngredientRoutes.GET("/getImage/:id", IngredientResource.GetImageByID)
 				publicIngredientRoutes.GET("/searchIngredients", IngredientResource.GetByRecipeName)
+				publicIngredientRoutes.GET("/searchIngredientsByRecipeId", IngredientResource.GetByRecipeID)
 			}
 
 			// getCategoryById(categoryId)
