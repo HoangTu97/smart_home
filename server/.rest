@@ -21,3 +21,5 @@ GET http://localhost:8080/api/public/recipe/searchByIngredientName?name=b
 GET http://localhost:8080/api/public/ingredient/searchIngredients?recipeName=o
 ### 
 GET http://localhost:8080/api/public/ingredient/searchIngredientsByRecipeId?recipeId=0
+###
+GET http://localhost:8080/api/public/recipe/detail/1

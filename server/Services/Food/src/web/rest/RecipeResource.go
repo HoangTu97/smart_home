@@ -17,6 +17,8 @@ type RecipeResource interface {
 	GetByIngredient(c *gin.Context)
 	GetByIngredientName(c *gin.Context)
 	GetByRecipeName(c *gin.Context)
+	GetAll(c *gin.Context)
+	GetDetailByID(c *gin.Context)
 }
 
 type recipeResource struct {
@@ -116,4 +118,24 @@ func (r *recipeResource) GetByRecipeName(c *gin.Context) {
 	page := r.recipeService.FindPageByName(recipeName, pageable)
 
 	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
+}
+
+func (r *recipeResource) GetAll(c *gin.Context) {
+	pageable := pagination.GetPage(c)
+
+	page := r.recipeService.FindPage(pageable)
+
+	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
+}
+
+func (r *recipeResource) GetDetailByID(c *gin.Context) {
+	id := converter.MustUint(c.Param("id"))
+
+	recipeData, isExist := r.recipeService.FindOneWithCate(id)
+	if !isExist {
+		response.CreateErrorResponse(c, "RECIPE_NOT_FOUND")
+		return
+	}
+
+	response.CreateSuccesResponse(c, recipe.CreateRecipeDetailResponseDTO(recipeData))
 }

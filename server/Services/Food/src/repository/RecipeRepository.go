@@ -11,11 +11,13 @@ import (
 type RecipeRepository interface {
 	FindAll() []entity.Recipe
 	FindOne(id uint) (entity.Recipe, error)
+	FindOnePreloadCate(id uint) (entity.Recipe, error)
 	FindPageByCateID(cateID uint, pageable pagination.Pageable) page.Page
 	FindPageByCates(cates []entity.Category, pageable pagination.Pageable) page.Page
 	FindPageByName(name string, pageable pagination.Pageable) page.Page
 	FindPageByIngredientID(ingredientID uint, pageable pagination.Pageable) page.Page
 	FindPageByIngredientIDIn(ingredientIDs []uint, pageable pagination.Pageable) page.Page
+	FindPage(pageable pagination.Pageable) page.Page
 	FindByName(name string) []entity.Recipe
 	CountByCateID(cateID uint) int
 }
@@ -40,6 +42,15 @@ func (r *recipeRepository) FindAll() []entity.Recipe {
 func (r *recipeRepository) FindOne(id uint) (entity.Recipe, error) {
 	var recipe entity.Recipe
 	result := r.connection.First(&recipe, id)
+	if result.Error != nil {
+		return entity.Recipe{}, result.Error
+	}
+	return recipe, nil
+}
+
+func (r *recipeRepository) FindOnePreloadCate(id uint) (entity.Recipe, error) {
+	var recipe entity.Recipe
+	result := r.connection.Preload("Categories").First(&recipe, id)
 	if result.Error != nil {
 		return entity.Recipe{}, result.Error
 	}
@@ -114,6 +125,20 @@ func (r *recipeRepository) FindPageByIngredientIDIn(ingredientIDs []uint, pageab
 	}, &recipes)
 
     return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
+}
+
+func (r *recipeRepository) FindPage(pageable pagination.Pageable) page.Page {
+	var recipes []entity.Recipe
+
+	paginator := pagination.Paging(&pagination.Param{
+        DB:      r.connection.Preload("Categories"),
+        Page:    pageable.GetPageNumber(),
+        Limit:   pageable.GetPageSize(),
+        OrderBy: []string{"id desc"},
+        ShowSQL: true,
+	}, &recipes)
+
+	return page.From(toInterfacesFromRecipes(recipes), paginator.TotalRecord)
 }
 
 func (r *recipeRepository) FindByName(name string) []entity.Recipe {

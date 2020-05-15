@@ -16,8 +16,10 @@ type RecipeService interface {
 	FindPageByName(name string, pageable pagination.Pageable) page.Page
 	FindPageByIngredientID(ingredientID uint, pageable pagination.Pageable) page.Page
 	FindPageByIngredientIDIn(ingredientIDs []uint, pageable pagination.Pageable) page.Page
+	FindPage(pageable pagination.Pageable) page.Page
 	FindIDsByName(name string) []uint
 	FindOne(id uint) (dto.RecipeDTO, bool)
+	FindOneWithCate(id uint) (entity.Recipe, bool)
 	CountByCateID(cateID uint) int
 }
 
@@ -55,6 +57,10 @@ func (s *recipeService) FindPageByIngredientIDIn(ingredientIDs []uint, pageable 
 	return s.recipeRepository.FindPageByIngredientIDIn(ingredientIDs, pageable)
 }
 
+func (s *recipeService) FindPage(pageable pagination.Pageable) page.Page {
+	return s.recipeRepository.FindPage(pageable)
+}
+
 func (s *recipeService) FindIDsByName(name string) []uint {
 	recipes := s.recipeRepository.FindByName(name)
 	ids := make([]uint, len(recipes))
@@ -70,6 +76,14 @@ func (s *recipeService) FindOne(id uint) (dto.RecipeDTO, bool) {
 		return dto.RecipeDTO{}, false
 	}
 	return s.recipeMapper.ToDTO(recipe), true
+}
+
+func (s *recipeService) FindOneWithCate(id uint) (entity.Recipe, bool) {
+	recipe, err := s.recipeRepository.FindOnePreloadCate(id)
+	if err != nil {
+		return entity.Recipe{}, false
+	}
+	return recipe, true
 }
 
 func (s *recipeService) CountByCateID(cateID uint) int {

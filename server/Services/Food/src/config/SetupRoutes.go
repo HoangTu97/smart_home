@@ -26,6 +26,8 @@ func SetupRoutes() {
 
 			publicRecipeRoutes := publicRoutes.Group("/recipe")
 			{
+				publicRecipeRoutes.GET("/getAll", RecipeResource.GetAll)
+				publicRecipeRoutes.GET("/detail/:id", RecipeResource.GetDetailByID)
 				publicRecipeRoutes.GET("/getByCategory/:categoryId", RecipeResource.GetByCategory)
 				publicRecipeRoutes.GET("/countByCategory/:categoryId", RecipeResource.GetCountByCategory)
 				publicRecipeRoutes.GET("/getByIngredient/:ingredientId", RecipeResource.GetByIngredient)
