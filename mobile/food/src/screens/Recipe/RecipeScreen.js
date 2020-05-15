@@ -11,11 +11,6 @@ import {
 } from 'react-native';
 import styles from './styles';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import {
-  getIngredientName,
-  getCategoryName,
-  getCategoryById,
-} from '../../data/MockDataAPI';
 import BackButton from '../../components/BackButton/BackButton';
 import ViewIngredientsButton from '../../components/ViewIngredientsButton/ViewIngredientsButton';
 import axios from 'axios';
@@ -61,7 +56,8 @@ export default function RecipeScreen({route, navigation}) {
       .get(`http://192.168.0.103:8080/api/public/recipe/detail/${item.id}`)
       .then((response) => response.data)
       .then((response) => {
-        setRecipe(response.data);
+        setRecipe(response.data)
+        console.log(response.data)
       })
       .catch(function (error) {
         console.log(error);

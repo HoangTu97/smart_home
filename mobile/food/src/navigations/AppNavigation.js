@@ -31,6 +31,7 @@ function MainNavigator() {
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='Recipe' component={RecipeScreen}/>
       <Stack.Screen name='RecipesList' component={RecipesListScreen} />
+      <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
     </Stack.Navigator>
   )
 }
