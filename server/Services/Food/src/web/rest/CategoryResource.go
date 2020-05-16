@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"Food/util/pagination"
 	"github.com/gin-gonic/gin"
 	"Food/dto/response"
 	"Food/dto/response/category"
@@ -10,6 +11,7 @@ import (
 
 // CategoryResource godoc
 type CategoryResource interface {
+	GetAll(c *gin.Context)
 	GetByID(c *gin.Context)
 	GetNameByID(c *gin.Context)
 }
@@ -23,6 +25,14 @@ func NewCategory(categoryService service.CategoryService) CategoryResource {
 	return &categoryResource{
 		categoryService: categoryService,
 	}
+}
+
+func (r *categoryResource) GetAll(c *gin.Context) {
+	pageable := pagination.GetPage(c)
+
+	page := r.categoryService.FindPage(pageable)
+
+	response.CreateSuccesResponse(c, category.CreateCategoryListResponseDTOFromPage(page))
 }
 
 func (r *categoryResource) GetByID(c *gin.Context) {

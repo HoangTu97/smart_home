@@ -33,6 +33,8 @@ function MainNavigator() {
       <Stack.Screen name='RecipesList' component={RecipesListScreen} />
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
       <Stack.Screen name='Ingredient' component={IngredientScreen} />
+      <Stack.Screen name='Categories' component={CategoriesScreen}/>
+      <Stack.Screen name='Search' component={SearchScreen} />
     </Stack.Navigator>
   )
 }

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"Food/util/page"
+	"Food/util/pagination"
 	"Food/entity"
 	"Food/dto"
 	"Food/repository"
@@ -13,6 +15,7 @@ type CategoryService interface {
 	FindOne(id uint) (dto.CategoryDTO, bool)
 	FindByName(name string) ([]entity.Category, bool)
 	FindAll() []dto.CategoryDTO
+	FindPage(pageable pagination.Pageable) page.Page
 	Delete(id uint) bool
 }
 
@@ -58,6 +61,10 @@ func (s *categoryService) FindByName(name string) ([]entity.Category, bool) {
 func (s *categoryService) FindAll() []dto.CategoryDTO {
 	categories := s.categoryRepository.FindAll()
 	return s.categoryMapper.ToDTOS(categories)
+}
+
+func (s *categoryService) FindPage(pageable pagination.Pageable) page.Page {
+	return s.categoryRepository.FindPage(pageable)
 }
 
 func (s *categoryService) Delete(id uint) bool {

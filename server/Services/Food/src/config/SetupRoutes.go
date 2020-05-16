@@ -22,6 +22,7 @@ func SetupRoutes() {
 			{
 				publicCategoryRoutes.GET("/detail/:id", CategoryResource.GetByID)
 				publicCategoryRoutes.GET("/getName/:id", CategoryResource.GetNameByID)
+				publicCategoryRoutes.GET("/getAll", CategoryResource.GetAll)
 			}
 
 			publicRecipeRoutes := publicRoutes.Group("/recipe")

@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"Food/util/page"
+	"Food/util/pagination"
 	"Food/entity"
 	"github.com/jinzhu/gorm"
 )
@@ -11,6 +13,7 @@ type CategoryRepository interface {
 	FindOne(id uint) (entity.Category, error)
 	FindOneByName(name string) ([]entity.Category, error)
 	FindAll() []entity.Category
+	FindPage(pageable pagination.Pageable) page.Page
 	Delete(category entity.Category) error
 }
 
@@ -57,10 +60,32 @@ func (r *categoryRepository) FindAll() []entity.Category {
 	return categories
 }
 
+func (r *categoryRepository) FindPage(pageable pagination.Pageable) page.Page {
+	var categories []entity.Category
+
+	paginator := pagination.Paging(&pagination.Param{
+        DB:      r.connection.Preload("Recipes"),
+        Page:    pageable.GetPageNumber(),
+        Limit:   pageable.GetPageSize(),
+        OrderBy: []string{"id desc"},
+        ShowSQL: true,
+	}, &categories)
+
+	return page.From(toInterfacesFromCategories(categories), paginator.TotalRecord)
+}
+
 func (r *categoryRepository) Delete(category entity.Category) error {
 	result := r.connection.Delete(&category)
 	if result.Error != nil {
 		return result.Error
 	}
 	return nil
+}
+
+func toInterfacesFromCategories(categories []entity.Category) []interface{} {
+	content := make([]interface{}, len(categories))
+	for i, v := range categories {
+		content[i] = v
+	}
+	return content
 }
