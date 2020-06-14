@@ -1,0 +1,56 @@
+package routers
+
+import (
+	CategoryResource "Food/web/rest/categoryresource"
+	IngredientResource "Food/web/rest/ingredientresource"
+	RecipeResource "Food/web/rest/reciperesource"
+
+	"github.com/gin-gonic/gin"
+
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+)
+
+// InitRouter initialize routing information
+func InitRouter() *gin.Engine {
+	r := gin.New()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	apiRoutes := r.Group("/api")
+	{
+		publicRoutes := apiRoutes.Group("/public")
+		{
+			publicCategoryRoutes := publicRoutes.Group("/category")
+			{
+				publicCategoryRoutes.GET("/detail/:id", CategoryResource.GetByID)
+				publicCategoryRoutes.GET("/getName/:id", CategoryResource.GetNameByID)
+				publicCategoryRoutes.GET("/getAll", CategoryResource.GetAll)
+			}
+
+			publicRecipeRoutes := publicRoutes.Group("/recipe")
+			{
+				publicRecipeRoutes.GET("/getAll", RecipeResource.GetAll)
+				publicRecipeRoutes.GET("/detail/:id", RecipeResource.GetDetailByID)
+				publicRecipeRoutes.GET("/getByCategory/:categoryId", RecipeResource.GetByCategory)
+				publicRecipeRoutes.GET("/countByCategory/:categoryId", RecipeResource.GetCountByCategory)
+				publicRecipeRoutes.GET("/getByIngredient/:ingredientId", RecipeResource.GetByIngredient)
+				publicRecipeRoutes.GET("/searchByIngredientName", RecipeResource.GetByIngredientName)
+				publicRecipeRoutes.GET("/searchByCategoryName", RecipeResource.GetByCategoryName)
+				publicRecipeRoutes.GET("/searchByRecipeName", RecipeResource.GetByRecipeName)
+			}
+
+			publicIngredientRoutes := publicRoutes.Group("/ingredient")
+			{
+				publicIngredientRoutes.GET("/getName/:id", IngredientResource.GetNameByID)
+				publicIngredientRoutes.GET("/getImage/:id", IngredientResource.GetImageByID)
+				publicIngredientRoutes.GET("/searchIngredients", IngredientResource.GetByRecipeName)
+				publicIngredientRoutes.GET("/searchIngredientsByRecipeId", IngredientResource.GetByRecipeID)
+			}
+		}
+	}
+
+	return r
+}
