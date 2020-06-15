@@ -7,7 +7,7 @@ import (
 )
 
 func SaveCate(category entity.Category) (entity.Category, error) {
-	result := db.Save(&category)
+	result := GetDB().Save(&category)
 	if result.Error != nil {
 		return entity.Category{}, result.Error
 	}
@@ -16,16 +16,29 @@ func SaveCate(category entity.Category) (entity.Category, error) {
 
 func FindOneCate(id uint) (entity.Category, error) {
 	var category entity.Category
-	result := db.First(&category, id)
+
+	// key := "CATE_" + converter.ToStr(id)
+	// if gredis.Exists(key) {
+	// 	data, err := gredis.Get(key)
+	// 	if err == nil {
+	// 		json.Unmarshal(data, &category)
+	// 		return category, nil
+	// 	}
+	// 	logging.Info("FindOneCate", err)
+	// }
+
+	result := GetDB().First(&category, id)
 	if result.Error != nil {
 		return entity.Category{}, result.Error
 	}
+
+	// gredis.Set(key, category, 3600)
 	return category, nil
 }
 
 func FindOneCateByName(name string) ([]entity.Category, error) {
 	var categories []entity.Category
-	result := db.Where("name LIKE ?", "%" + name + "%").Find(&categories)
+	result := GetDB().Where("name LIKE ?", "%" + name + "%").Find(&categories)
 	if result.Error != nil {
 		return []entity.Category{}, result.Error
 	}
@@ -34,7 +47,7 @@ func FindOneCateByName(name string) ([]entity.Category, error) {
 
 func FindAllCate() []entity.Category {
 	var categories []entity.Category
-	db.Find(&categories)
+	GetDB().Find(&categories)
 	return categories
 }
 
@@ -42,7 +55,7 @@ func FindPageCate(pageable pagination.Pageable) page.Page {
 	var categories []entity.Category
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      db.Preload("Recipes"),
+        DB:      GetDB().Preload("Recipes"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -53,7 +66,7 @@ func FindPageCate(pageable pagination.Pageable) page.Page {
 }
 
 func DeleteCate(category entity.Category) error {
-	result := db.Delete(&category)
+	result := GetDB().Delete(&category)
 	if result.Error != nil {
 		return result.Error
 	}

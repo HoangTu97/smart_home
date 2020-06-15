@@ -15,18 +15,6 @@ import (
 	"Food/routers"
 )
 
-// func main() {
-// 	config.LoadConfigFile()
-// 	config.LoadAppProperties()
-
-// 	logger.Setup()
-
-// 	config.SetupDB()
-// 	config.InitResource()
-// 	config.SetupRoutes()
-// 	config.CloseDB()
-// }
-
 func init() {
 	setting.Setup()
 	repository.Setup()
@@ -59,4 +47,5 @@ func main() {
 	log.Printf("[info] start http server listening %s", endPoint)
 
 	server.ListenAndServe()
+	repository.CloseDB()
 }

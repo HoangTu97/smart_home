@@ -8,13 +8,13 @@ import (
 
 func FindAllRecipe() []entity.Recipe {
 	var recipes []entity.Recipe
-	db.Find(&recipes)
+	GetDB().Find(&recipes)
 	return recipes
 }
 
 func FindOneRecipe(id uint) (entity.Recipe, error) {
 	var recipe entity.Recipe
-	result := db.First(&recipe, id)
+	result := GetDB().First(&recipe, id)
 	if result.Error != nil {
 		return entity.Recipe{}, result.Error
 	}
@@ -23,7 +23,7 @@ func FindOneRecipe(id uint) (entity.Recipe, error) {
 
 func FindOneRecipePreloadCate(id uint) (entity.Recipe, error) {
 	var recipe entity.Recipe
-	result := db.Preload("Categories").First(&recipe, id)
+	result := GetDB().Preload("Categories").First(&recipe, id)
 	if result.Error != nil {
 		return entity.Recipe{}, result.Error
 	}
@@ -34,7 +34,7 @@ func FindPageRecipeByCateID(cateID uint, pageable pagination.Pageable) page.Page
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      db.Model(&entity.Category{ID: cateID}).Related(&recipes, "Recipes").Preload("Categories"),
+        DB:      GetDB().Model(&entity.Category{ID: cateID}).Related(&recipes, "Recipes").Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -48,7 +48,7 @@ func FindPageRecipeByCates(cates []entity.Category, pageable pagination.Pageable
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      db.Model(&cates).Related(&recipes, "Recipes").Preload("Categories"),
+        DB:      GetDB().Model(&cates).Related(&recipes, "Recipes").Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -62,7 +62,7 @@ func FindPageRecipeByName(name string, pageable pagination.Pageable) page.Page {
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      db.Where("name LIKE ?", "%" + name + "%").Preload("Categories"),
+        DB:      GetDB().Where("name LIKE ?", "%" + name + "%").Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -76,7 +76,7 @@ func FindPageRecipeByIngredientID(ingredientID uint, pageable pagination.Pageabl
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      db.Where("id IN (?)", db.Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id = ?", ingredientID).SubQuery()).Preload("Categories"),
+        DB:      GetDB().Where("id IN (?)", GetDB().Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id = ?", ingredientID).SubQuery()).Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -90,7 +90,7 @@ func FindPageRecipeByIngredientIDIn(ingredientIDs []uint, pageable pagination.Pa
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      db.Where("id IN (?)", db.Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id IN (?)", ingredientIDs).SubQuery()).Preload("Categories"),
+        DB:      GetDB().Where("id IN (?)", GetDB().Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id IN (?)", ingredientIDs).SubQuery()).Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -104,7 +104,7 @@ func FindPageRecipe(pageable pagination.Pageable) page.Page {
 	var recipes []entity.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      db.Preload("Categories"),
+        DB:      GetDB().Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -116,13 +116,13 @@ func FindPageRecipe(pageable pagination.Pageable) page.Page {
 
 func FindRecipeByName(name string) []entity.Recipe {
 	var recipes []entity.Recipe
-	db.Where("name LIKE ?", "%" + name + "%").Find(&recipes)
+	GetDB().Where("name LIKE ?", "%" + name + "%").Find(&recipes)
 	return recipes
 }
 
 func CountRecipeByCateID(cateID uint) int {
 	var result int
-	db.Table("cate_recipes").Where("category_id = ?", cateID).Count(&result)
+	GetDB().Table("cate_recipes").Where("category_id = ?", cateID).Count(&result)
 	return result
 }
 

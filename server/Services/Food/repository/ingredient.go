@@ -6,13 +6,13 @@ import (
 
 func FindAllIngredient() []entity.Ingredient {
 	var ingredients []entity.Ingredient
-	db.Find(&ingredients)
+	GetDB().Find(&ingredients)
 	return ingredients
 }
 
 func FindOneIngredient(id uint) (entity.Ingredient, error) {
 	var ingredient entity.Ingredient
-	result := db.First(&ingredient, id)
+	result := GetDB().First(&ingredient, id)
 	if result.Error != nil {
 		return entity.Ingredient{}, result.Error
 	}
@@ -21,6 +21,6 @@ func FindOneIngredient(id uint) (entity.Ingredient, error) {
 
 func FindIngredientByName(name string) []entity.Ingredient {
 	var ingredients []entity.Ingredient
-	db.Where("name LIKE ?", "%" + name + "%").Find(&ingredients)
+	GetDB().Where("name LIKE ?", "%" + name + "%").Find(&ingredients)
 	return ingredients
 }
