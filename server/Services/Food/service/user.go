@@ -1,0 +1,38 @@
+package service
+
+import (
+	"Food/dto"
+	"Food/pkg/logging"
+	"Food/repository"
+	"Food/service/mapper"
+
+	"golang.org/x/crypto/bcrypt"
+)
+
+func CreateUser(userDTO dto.UserDTO) (dto.UserDTO, bool) {
+	pass, err := bcrypt.GenerateFromPassword([]byte(userDTO.Password), bcrypt.DefaultCost)
+	if err != nil {
+		logging.Error(err)
+		return dto.UserDTO{}, false
+	}
+	userDTO.Password = string(pass)
+
+	user := mapper.ToUser(userDTO)
+	repository.SaveUser(user)
+	logging.Info(user.ID)
+	return mapper.ToUserDTO(user), true
+}
+
+func FindOneUserLogin(username string, password string) (dto.UserDTO, bool) {
+	user, err := repository.FindOneUserByName(username)
+	if err != nil {
+		return dto.UserDTO{}, false
+	}
+	
+	errf := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if errf != nil && errf == bcrypt.ErrMismatchedHashAndPassword {
+		return dto.UserDTO{}, false
+	}
+
+	return mapper.ToUserDTO(user), true
+}
