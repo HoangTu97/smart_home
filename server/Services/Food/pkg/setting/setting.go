@@ -20,6 +20,7 @@ type App struct {
 type Server struct {
 	RunMode      string
 	HTTPPort     string
+	SSL          bool
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }

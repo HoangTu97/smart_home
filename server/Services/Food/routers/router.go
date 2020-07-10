@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
@@ -16,6 +16,7 @@ func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	// r.Use(include.CORS())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -57,10 +58,10 @@ func InitRouter() *gin.Engine {
 			}
 		}
 
-		privateRoutes := apiRoutes.Group("/private")
-		{
+		// privateRoutes := apiRoutes.Group("/private")
+		// {
 			
-		}
+		// }
 	}
 
 	return r

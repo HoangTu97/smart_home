@@ -9,7 +9,7 @@ import (
 )
 
 // DB db instance
-var DB *gorm.DB
+var db *gorm.DB
 
 // Setup initializes the database instance
 func Setup() {
@@ -28,18 +28,16 @@ func Setup() {
 
 	migrateDB(db)
 	initDB(db)
-
-	DB = db
 }
 
 // CloseDB closes database connection (unnecessary)
 func CloseDB() {
-	defer DB.Close()
+	defer db.Close()
 }
 
 // GetDB get connection
 func GetDB() *gorm.DB {
-	return DB
+	return db
 }
 
 func migrateDB(db *gorm.DB) {

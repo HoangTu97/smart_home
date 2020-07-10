@@ -47,5 +47,22 @@ func main() {
 	log.Printf("[info] start http server listening %s", endPoint)
 
 	server.ListenAndServe()
+
+	// if setting.ServerSetting.SSL {
+
+	// 	SSLKeys := &struct {
+	// 		CERT string
+	// 		KEY  string
+	// 	}{}
+
+	// 	//Generated using sh generate-certificate.sh
+	// 	SSLKeys.CERT = "./cert/myCA.cer"
+	// 	SSLKeys.KEY = "./cert/myCA.key"
+
+	// 	routersInit.RunTLS(":"+setting.ServerSetting.HTTPPort, SSLKeys.CERT, SSLKeys.KEY)
+	// } else {
+	// 	routersInit.Run(":" + setting.ServerSetting.HTTPPort)
+	// }
+
 	repository.CloseDB()
 }
