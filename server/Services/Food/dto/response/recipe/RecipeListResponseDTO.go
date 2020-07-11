@@ -2,7 +2,7 @@ package recipe
 
 import (
 	"Food/models"
-	"Food/pkg/page"
+	"Food/helpers/page"
 )
 
 // RecipeListResponseDTO godoc

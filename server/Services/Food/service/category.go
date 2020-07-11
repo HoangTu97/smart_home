@@ -3,8 +3,8 @@ package service
 import (
 	"Food/dto"
 	"Food/models"
-	"Food/pkg/page"
-	"Food/pkg/pagination"
+	"Food/helpers/page"
+	"Food/helpers/pagination"
 	"Food/repository"
 	"Food/service/mapper"
 )

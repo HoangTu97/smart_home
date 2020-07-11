@@ -3,8 +3,8 @@ package reciperesource
 import (
 	"Food/dto/response"
 	"Food/dto/response/recipe"
-	"Food/pkg/converter"
-	"Food/pkg/pagination"
+	"Food/helpers/converter"
+	"Food/helpers/pagination"
 	"Food/service"
 
 	"github.com/gin-gonic/gin"

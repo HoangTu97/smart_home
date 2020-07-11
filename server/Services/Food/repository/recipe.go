@@ -2,8 +2,8 @@ package repository
 
 import (
 	"Food/models"
-	"Food/pkg/page"
-	"Food/pkg/pagination"
+	"Food/helpers/page"
+	"Food/helpers/pagination"
 )
 
 func FindAllRecipe() []models.Recipe {

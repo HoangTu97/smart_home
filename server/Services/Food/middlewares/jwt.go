@@ -2,8 +2,8 @@ package middlewares
 
 import (
 	"Food/dto/response"
-	"Food/pkg/e"
-	"Food/pkg/util"
+	"Food/helpers/e"
+	"Food/helpers/util"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"

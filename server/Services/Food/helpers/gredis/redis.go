@@ -1,7 +1,7 @@
 package gredis
 
 import (
-	"Food/pkg/setting"
+	"Food/helpers/setting"
 	"encoding/json"
 	"time"
 

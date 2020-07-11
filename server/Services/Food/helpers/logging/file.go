@@ -1,7 +1,7 @@
 package logging
 
 import (
-	"Food/pkg/setting"
+	"Food/helpers/setting"
 	"fmt"
 	"time"
 )

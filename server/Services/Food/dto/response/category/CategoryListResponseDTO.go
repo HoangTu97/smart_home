@@ -2,7 +2,7 @@ package category
 
 import (
 	"Food/models"
-	"Food/pkg/page"
+	"Food/helpers/page"
 )
 
 // CategoryListItemResponseDTO

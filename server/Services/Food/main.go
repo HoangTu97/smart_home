@@ -7,10 +7,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"Food/pkg/gredis"
-	"Food/pkg/logging"
-	"Food/pkg/setting"
-	"Food/pkg/util"
+	"Food/helpers/gredis"
+	"Food/helpers/logging"
+	"Food/helpers/setting"
+	"Food/helpers/util"
 	"Food/repository"
 	"Food/routers"
 )

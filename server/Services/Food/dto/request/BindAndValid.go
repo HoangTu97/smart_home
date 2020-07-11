@@ -1,8 +1,8 @@
 package request
 
 import (
-	"Food/pkg/e"
-	"Food/pkg/logging"
+	"Food/helpers/e"
+	"Food/helpers/logging"
 
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"

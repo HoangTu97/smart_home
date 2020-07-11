@@ -3,7 +3,7 @@ package ingredientresource
 import (
 	"Food/dto/response"
 	"Food/dto/response/ingredient"
-	"Food/pkg/converter"
+	"Food/helpers/converter"
 	"Food/service"
 
 	"github.com/gin-gonic/gin"

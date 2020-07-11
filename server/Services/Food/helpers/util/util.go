@@ -1,7 +1,7 @@
 package util
 
 import (
-	"Food/pkg/setting"
+	"Food/helpers/setting"
 )
 
 // Setup Initialize the util
