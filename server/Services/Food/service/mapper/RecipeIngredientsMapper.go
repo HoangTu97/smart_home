@@ -2,10 +2,10 @@ package mapper
 
 import (
 	"Food/dto"
-	"Food/entity"
+	"Food/models"
 )
 
-func ToRecipeIngredientsDTO(entity entity.RecipeIngredients) dto.RecipeIngredientsDTO {
+func ToRecipeIngredientsDTO(entity models.RecipeIngredients) dto.RecipeIngredientsDTO {
 	return dto.RecipeIngredientsDTO{
 		ID:           entity.ID,
 		CreatedAt:    entity.CreatedAt,
@@ -16,8 +16,8 @@ func ToRecipeIngredientsDTO(entity entity.RecipeIngredients) dto.RecipeIngredien
 	}
 }
 
-func ToRecipeIngredient(dto dto.RecipeIngredientsDTO) entity.RecipeIngredients {
-	return entity.RecipeIngredients{
+func ToRecipeIngredient(dto dto.RecipeIngredientsDTO) models.RecipeIngredients {
+	return models.RecipeIngredients{
 		ID:           dto.ID,
 		CreatedAt:    dto.CreatedAt,
 		UpdatedAt:    dto.UpdatedAt,
@@ -27,7 +27,7 @@ func ToRecipeIngredient(dto dto.RecipeIngredientsDTO) entity.RecipeIngredients {
 	}
 }
 
-func ToRecipeIngredientsDTOS(entityList []entity.RecipeIngredients) []dto.RecipeIngredientsDTO {
+func ToRecipeIngredientsDTOS(entityList []models.RecipeIngredients) []dto.RecipeIngredientsDTO {
 	dtos := make([]dto.RecipeIngredientsDTO, len(entityList))
 
 	for i, v := range entityList {
@@ -37,8 +37,8 @@ func ToRecipeIngredientsDTOS(entityList []entity.RecipeIngredients) []dto.Recipe
 	return dtos
 }
 
-func ToRecipeIngredients(dtoList []dto.RecipeIngredientsDTO) []entity.RecipeIngredients {
-	entities := make([]entity.RecipeIngredients, len(dtoList))
+func ToRecipeIngredients(dtoList []dto.RecipeIngredientsDTO) []models.RecipeIngredients {
+	entities := make([]models.RecipeIngredients, len(dtoList))
 
 	for i, v := range dtoList {
 		entities[i] = ToRecipeIngredient(v)

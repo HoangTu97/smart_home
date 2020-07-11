@@ -1,14 +1,14 @@
 package service
 
 import (
-	"Food/entity"
+	"Food/models"
 	"Food/repository"
 )
 
-func FindRecipeIngredientsByRecipeIDs(recipeIDs []uint) []entity.RecipeIngredients {
+func FindRecipeIngredientsByRecipeIDs(recipeIDs []uint) []models.RecipeIngredients {
 	return repository.FindRecipeIngredientsByRecipeIDs(recipeIDs)
 }
 
-func FindRecipeIngredientsByRecipeID(recipeID uint) []entity.RecipeIngredients {
+func FindRecipeIngredientsByRecipeID(recipeID uint) []models.RecipeIngredients {
 	return repository.FindRecipeIngredientsByRecipeID(recipeID)
 }

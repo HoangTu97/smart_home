@@ -2,12 +2,12 @@ package mapper
 
 import (
 	"Food/dto"
-	"Food/entity"
+	"Food/models"
 
 	uuid "github.com/satori/go.uuid"
 )
 
-func ToUserDTO(entity entity.User) dto.UserDTO {
+func ToUserDTO(entity models.User) dto.UserDTO {
 	return dto.UserDTO{
 		ID:         entity.ID.String(),
 		CreatedAt:  entity.CreatedAt,
@@ -25,13 +25,13 @@ func ToUserDTO(entity entity.User) dto.UserDTO {
 	}
 }
 
-func ToUser(dto dto.UserDTO) entity.User {
+func ToUser(dto dto.UserDTO) models.User {
 	var id uuid.UUID
 	if len(dto.ID) > 0 {
 		id = uuid.Must(uuid.FromString(dto.ID))
 	}
 
-	return entity.User{
+	return models.User{
 		ID:         id,
 		CreatedAt:  dto.CreatedAt,
 		UpdatedAt:  dto.UpdatedAt,
@@ -48,7 +48,7 @@ func ToUser(dto dto.UserDTO) entity.User {
 	}
 }
 
-func ToUserDTOS(entityList []entity.User) []dto.UserDTO {
+func ToUserDTOS(entityList []models.User) []dto.UserDTO {
 	dtos := make([]dto.UserDTO, len(entityList))
 
 	for i, entity := range entityList {
@@ -58,8 +58,8 @@ func ToUserDTOS(entityList []entity.User) []dto.UserDTO {
 	return dtos
 }
 
-func ToUsers(dtoList []dto.UserDTO) []entity.User {
-	entities := make([]entity.User, len(dtoList))
+func ToUsers(dtoList []dto.UserDTO) []models.User {
+	entities := make([]models.User, len(dtoList))
 
 	for i, dto := range dtoList {
 		entities[i] = ToUser(dto)

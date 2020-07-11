@@ -2,10 +2,10 @@ package mapper
 
 import (
 	"Food/dto"
-	"Food/entity"
+	"Food/models"
 )
 
-func ToCategoryDTO(entity entity.Category) dto.CategoryDTO {
+func ToCategoryDTO(entity models.Category) dto.CategoryDTO {
 	return dto.CategoryDTO{
 		ID:        entity.ID,
 		CreatedAt: entity.CreatedAt,
@@ -16,8 +16,8 @@ func ToCategoryDTO(entity entity.Category) dto.CategoryDTO {
 	}
 }
 
-func ToCategory(dto dto.CategoryDTO) entity.Category {
-	return entity.Category{
+func ToCategory(dto dto.CategoryDTO) models.Category {
+	return models.Category{
 		ID:        dto.ID,
 		CreatedAt: dto.CreatedAt,
 		UpdatedAt: dto.UpdatedAt,
@@ -27,7 +27,7 @@ func ToCategory(dto dto.CategoryDTO) entity.Category {
 	}
 }
 
-func ToCategoryDTOS(entityList []entity.Category) []dto.CategoryDTO {
+func ToCategoryDTOS(entityList []models.Category) []dto.CategoryDTO {
 	dtos := make([]dto.CategoryDTO, len(entityList))
 
 	for i, v := range entityList {
@@ -37,8 +37,8 @@ func ToCategoryDTOS(entityList []entity.Category) []dto.CategoryDTO {
 	return dtos
 }
 
-func ToCategories(dtoList []dto.CategoryDTO) []entity.Category {
-	entities := make([]entity.Category, len(dtoList))
+func ToCategories(dtoList []dto.CategoryDTO) []models.Category {
+	entities := make([]models.Category, len(dtoList))
 
 	for i, v := range dtoList {
 		entities[i] = ToCategory(v)

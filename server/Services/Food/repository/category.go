@@ -1,21 +1,21 @@
 package repository
 
 import (
-	"Food/entity"
+	"Food/models"
 	"Food/pkg/page"
 	"Food/pkg/pagination"
 )
 
-func SaveCate(category entity.Category) (entity.Category, error) {
+func SaveCate(category models.Category) (models.Category, error) {
 	result := GetDB().Save(&category)
 	if result.Error != nil {
-		return entity.Category{}, result.Error
+		return models.Category{}, result.Error
 	}
 	return category, nil
 }
 
-func FindOneCate(id uint) (entity.Category, error) {
-	var category entity.Category
+func FindOneCate(id uint) (models.Category, error) {
+	var category models.Category
 
 	// key := "CATE_" + converter.ToStr(id)
 	// if gredis.Exists(key) {
@@ -29,30 +29,30 @@ func FindOneCate(id uint) (entity.Category, error) {
 
 	result := GetDB().First(&category, id)
 	if result.Error != nil {
-		return entity.Category{}, result.Error
+		return models.Category{}, result.Error
 	}
 
 	// gredis.Set(key, category, 3600)
 	return category, nil
 }
 
-func FindOneCateByName(name string) ([]entity.Category, error) {
-	var categories []entity.Category
+func FindOneCateByName(name string) ([]models.Category, error) {
+	var categories []models.Category
 	result := GetDB().Where("name LIKE ?", "%" + name + "%").Find(&categories)
 	if result.Error != nil {
-		return []entity.Category{}, result.Error
+		return []models.Category{}, result.Error
 	}
 	return categories, nil
 }
 
-func FindAllCate() []entity.Category {
-	var categories []entity.Category
+func FindAllCate() []models.Category {
+	var categories []models.Category
 	GetDB().Find(&categories)
 	return categories
 }
 
 func FindPageCate(pageable pagination.Pageable) page.Page {
-	var categories []entity.Category
+	var categories []models.Category
 
 	paginator := pagination.Paging(&pagination.Param{
         DB:      GetDB().Preload("Recipes"),
@@ -65,7 +65,7 @@ func FindPageCate(pageable pagination.Pageable) page.Page {
 	return page.From(toInterfacesFromCategories(categories), paginator.TotalRecord)
 }
 
-func DeleteCate(category entity.Category) error {
+func DeleteCate(category models.Category) error {
 	result := GetDB().Delete(&category)
 	if result.Error != nil {
 		return result.Error
@@ -73,7 +73,7 @@ func DeleteCate(category entity.Category) error {
 	return nil
 }
 
-func toInterfacesFromCategories(categories []entity.Category) []interface{} {
+func toInterfacesFromCategories(categories []models.Category) []interface{} {
 	content := make([]interface{}, len(categories))
 	for i, v := range categories {
 		content[i] = v

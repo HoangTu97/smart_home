@@ -2,11 +2,11 @@ package mapper
 
 import (
 	"Food/dto"
-	"Food/entity"
+	"Food/models"
 	"strings"
 )
 
-func ToRecipeDTO(entity entity.Recipe) dto.RecipeDTO {
+func ToRecipeDTO(entity models.Recipe) dto.RecipeDTO {
 	return dto.RecipeDTO{
 		ID:          entity.ID,
 		CreatedAt:   entity.CreatedAt,
@@ -20,8 +20,8 @@ func ToRecipeDTO(entity entity.Recipe) dto.RecipeDTO {
 	}
 }
 
-func ToRecipe(dto dto.RecipeDTO) entity.Recipe {
-	return entity.Recipe{
+func ToRecipe(dto dto.RecipeDTO) models.Recipe {
+	return models.Recipe{
 		ID:          dto.ID,
 		CreatedAt:   dto.CreatedAt,
 		UpdatedAt:   dto.UpdatedAt,
@@ -34,7 +34,7 @@ func ToRecipe(dto dto.RecipeDTO) entity.Recipe {
 	}
 }
 
-func ToRecipeDTOS(entityList []entity.Recipe) []dto.RecipeDTO {
+func ToRecipeDTOS(entityList []models.Recipe) []dto.RecipeDTO {
 	dtos := make([]dto.RecipeDTO, len(entityList))
 
 	for i, entity := range entityList {
@@ -44,8 +44,8 @@ func ToRecipeDTOS(entityList []entity.Recipe) []dto.RecipeDTO {
 	return dtos
 }
 
-func ToRecipes(dtoList []dto.RecipeDTO) []entity.Recipe {
-	entities := make([]entity.Recipe, len(dtoList))
+func ToRecipes(dtoList []dto.RecipeDTO) []models.Recipe {
+	entities := make([]models.Recipe, len(dtoList))
 
 	for i, dto := range dtoList {
 		entities[i] = ToRecipe(dto)
@@ -58,7 +58,7 @@ func ToDTOSInterfaceFromEntitiesInterface(interfaces []interface{}) []interface{
 	dtos := make([]interface{}, len(interfaces))
 
 	for i, inter := range interfaces {
-		dtos[i] = ToRecipeDTO(inter.(entity.Recipe))
+		dtos[i] = ToRecipeDTO(inter.(models.Recipe))
 	}
 
 	return dtos

@@ -1,14 +1,15 @@
 package routers
 
 import (
-	CategoryResource "Food/web/rest/categoryresource"
-	RecipeResource "Food/web/rest/reciperesource"
-	UserResource "Food/web/rest/userresource"
+	_ "Food/docs"
+	CategoryResource "Food/controllers/categoryresource"
+	RecipeResource "Food/controllers/reciperesource"
+	UserResource "Food/controllers/userresource"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"github.com/swaggo/files"
 )
 
 // InitRouter initialize routing information

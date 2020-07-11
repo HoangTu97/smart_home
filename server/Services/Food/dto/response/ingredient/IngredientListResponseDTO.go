@@ -1,7 +1,7 @@
 package ingredient
 
 import (
-	"Food/entity"
+	"Food/models"
 )
 
 // IngredientListResponseDTO godoc
@@ -18,8 +18,8 @@ func CreateEmptyIngredientListResponseDTO() *IngredientListResponseDTO {
 	}
 }
 
-// CreateIngredientListResponseDTO create list response from list entity.RecipeIngredients
-func CreateIngredientListResponseDTO(data []entity.RecipeIngredients) *IngredientListResponseDTO {
+// CreateIngredientListResponseDTO create list response from list models.RecipeIngredients
+func CreateIngredientListResponseDTO(data []models.RecipeIngredients) *IngredientListResponseDTO {
 	result := make([]IngredientListItemResponseDTO, len(data))
 	for i, v := range data {
 		result[i] = IngredientListItemResponseDTO{

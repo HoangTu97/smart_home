@@ -1,7 +1,7 @@
 package category
 
 import (
-	"Food/entity"
+	"Food/models"
 	"Food/pkg/page"
 )
 
@@ -19,11 +19,11 @@ type CategoryListResponseDTO struct {
 	TotalItems int                           `json:"totalItems"`
 }
 
-// CreateCategoryListResponseDTOFromPage create page from page entity.Category
+// CreateCategoryListResponseDTOFromPage create page from page models.Category
 func CreateCategoryListResponseDTOFromPage(page page.Page) *CategoryListResponseDTO {
 	result := make([]CategoryListItemResponseDTO, page.GetTotalElements())
 	for i, v := range page.GetContent() {
-		entity := v.(entity.Category)
+		entity := v.(models.Category)
 		recipes := entity.Recipes
 
 		result[i] = CategoryListItemResponseDTO{

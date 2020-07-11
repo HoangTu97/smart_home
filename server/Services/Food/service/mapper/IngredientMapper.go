@@ -2,10 +2,10 @@ package mapper
 
 import (
 	"Food/dto"
-	"Food/entity"
+	"Food/models"
 )
 
-func ToIngredientDTO(entity entity.Ingredient) dto.IngredientDTO {
+func ToIngredientDTO(entity models.Ingredient) dto.IngredientDTO {
 	return dto.IngredientDTO{
 		ID:          entity.ID,
 		CreatedAt:   entity.CreatedAt,
@@ -17,8 +17,8 @@ func ToIngredientDTO(entity entity.Ingredient) dto.IngredientDTO {
 	}
 }
 
-func ToIngredient(dto dto.IngredientDTO) entity.Ingredient {
-	return entity.Ingredient{
+func ToIngredient(dto dto.IngredientDTO) models.Ingredient {
+	return models.Ingredient{
 		ID:          dto.ID,
 		CreatedAt:   dto.CreatedAt,
 		UpdatedAt:   dto.UpdatedAt,
@@ -29,7 +29,7 @@ func ToIngredient(dto dto.IngredientDTO) entity.Ingredient {
 	}
 }
 
-func ToIngredientDTOS(entityList []entity.Ingredient) []dto.IngredientDTO {
+func ToIngredientDTOS(entityList []models.Ingredient) []dto.IngredientDTO {
 	dtos := make([]dto.IngredientDTO, len(entityList))
 
 	for i, v := range entityList {
@@ -39,8 +39,8 @@ func ToIngredientDTOS(entityList []entity.Ingredient) []dto.IngredientDTO {
 	return dtos
 }
 
-func ToIngredients(dtoList []dto.IngredientDTO) []entity.Ingredient {
-	entities := make([]entity.Ingredient, len(dtoList))
+func ToIngredients(dtoList []dto.IngredientDTO) []models.Ingredient {
+	entities := make([]models.Ingredient, len(dtoList))
 
 	for i, v := range dtoList {
 		entities[i] = ToIngredient(v)

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"Food/entity"
+	"Food/models"
 	"log"
 
 	"github.com/jinzhu/gorm"
@@ -9,7 +9,7 @@ import (
 )
 
 // DB db instance
-var db *gorm.DB
+var DB *gorm.DB
 
 // Setup initializes the database instance
 func Setup() {
@@ -28,45 +28,47 @@ func Setup() {
 
 	migrateDB(db)
 	initDB(db)
+
+	DB = db
 }
 
 // CloseDB closes database connection (unnecessary)
 func CloseDB() {
-	defer db.Close()
+	defer DB.Close()
 }
 
 // GetDB get connection
 func GetDB() *gorm.DB {
-	return db
+	return DB
 }
 
 func migrateDB(db *gorm.DB) {
-	db.AutoMigrate(&entity.Category{}, &entity.Recipe{}, &entity.Ingredient{}, &entity.RecipeIngredients{})
-	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&models.Category{}, &models.Recipe{}, &models.Ingredient{}, &models.RecipeIngredients{})
+	db.AutoMigrate(&models.User{})
 }
 
 func initDB(db *gorm.DB) {
 	count := 0
-	db.Model(&entity.Category{}).Count(&count)
+	db.Model(&models.Category{}).Count(&count)
 	if count == 0 {
-		cate1 := entity.Category{Name: "Mexican Food", Image: "https://ak1.picdn.net/shutterstock/videos/19498861/thumb/1.jpg"}
-		cate2 := entity.Category{Name: "Italian Food", Image: "https://images.unsplash.com/photo-1533777324565-a040eb52facd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"}
+		cate1 := models.Category{Name: "Mexican Food", Image: "https://ak1.picdn.net/shutterstock/videos/19498861/thumb/1.jpg"}
+		cate2 := models.Category{Name: "Italian Food", Image: "https://images.unsplash.com/photo-1533777324565-a040eb52facd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"}
 		db.Create(&cate1)
 		db.Create(&cate2)
 
-		// ingre1 := entity.Ingredient{Name: "Oil", Image: "https://ak7.picdn.net/shutterstock/videos/27252067/thumb/11.jpg", Description: "oil"}
-		// ingre2 := entity.Ingredient{Name: "Salt", Image: "https://image.freepik.com/free-photo/sea-salt-wooden-bowl-isolated-white-background_29402-416.jpg", Description: "saltt"}
-		// ingre3 := entity.Ingredient{Name: "Russet potatoes", Image: "http://www.valleyspuds.com/wp-content/uploads/Russet-Potatoes-cut.jpg", Description: "Russet potatoe"}
+		// ingre1 := modelsIngredient{Name: "Oil", Image: "https://ak7.picdn.net/shutterstock/videos/27252067/thumb/11.jpg", Description: "oil"}
+		// ingre2 := modelsIngredient{Name: "Salt", Image: "https://image.freepik.com/free-photo/sea-salt-wooden-bowl-isolated-white-background_29402-416.jpg", Description: "saltt"}
+		// ingre3 := modelsIngredient{Name: "Russet potatoes", Image: "http://www.valleyspuds.com/wp-content/uploads/Russet-Potatoes-cut.jpg", Description: "Russet potatoe"}
 		// DB.Create(&ingre1)
 		// DB.Create(&ingre2)
 		// DB.Create(&ingre3)
 
-		recipe1 := entity.Recipe{Name: "Oatmeal Cookies", Description: "abc", Image: "abc", Photos: "abc", Duration: 15, Categories: []entity.Category{cate1, cate2}}
+		recipe1 := models.Recipe{Name: "Oatmeal Cookies", Description: "abc", Image: "abc", Photos: "abc", Duration: 15, Categories: []models.Category{cate1, cate2}}
 		db.Create(&recipe1)
 
-		// ingres1 := entity.RecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre1.ID, Quantity: 200}
-		// ingres2 := entity.RecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre2.ID, Quantity: 5}
-		// ingres3 := entity.RecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre3.ID, Quantity: 300}
+		// ingres1 := modelsRecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre1.ID, Quantity: 200}
+		// ingres2 := modelsRecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre2.ID, Quantity: 5}
+		// ingres3 := modelsRecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre3.ID, Quantity: 300}
 		// DB.Create(&ingres1)
 		// DB.Create(&ingres2)
 		// DB.Create(&ingres3)

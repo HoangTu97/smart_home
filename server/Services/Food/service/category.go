@@ -2,7 +2,7 @@ package service
 
 import (
 	"Food/dto"
-	"Food/entity"
+	"Food/models"
 	"Food/pkg/page"
 	"Food/pkg/pagination"
 	"Food/repository"
@@ -27,10 +27,10 @@ func FindOneCate(id uint) (dto.CategoryDTO, bool) {
 	return mapper.ToCategoryDTO(category), true
 }
 
-func FindCateByName(name string) ([]entity.Category, bool) {
+func FindCateByName(name string) ([]models.Category, bool) {
 	categories, err := repository.FindOneCateByName(name)
 	if err != nil {
-		return []entity.Category{}, false
+		return []models.Category{}, false
 	}
 	return categories, true
 }

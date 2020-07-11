@@ -2,19 +2,19 @@ package service
 
 import (
 	"Food/dto"
-	"Food/entity"
+	"Food/models"
 	"Food/pkg/page"
 	"Food/pkg/pagination"
 	"Food/repository"
 	"Food/service/mapper"
 )
 
-// FindPageByCateID return page entity.Recipe
+// FindPageByCateID return page models.Recipe
 func FindPageRecipeByCateID(cateID uint, pageable pagination.Pageable) page.Page {
 	return repository.FindPageRecipeByCateID(cateID, pageable)
 }
 
-func FindPageRecipeByCates(cates []entity.Category, pageable pagination.Pageable) page.Page {
+func FindPageRecipeByCates(cates []models.Category, pageable pagination.Pageable) page.Page {
 	return repository.FindPageRecipeByCates(cates, pageable)
 }
 
@@ -51,10 +51,10 @@ func FindOneRecipe(id uint) (dto.RecipeDTO, bool) {
 	return mapper.ToRecipeDTO(recipe), true
 }
 
-func FindOneRecipeWithCate(id uint) (entity.Recipe, bool) {
+func FindOneRecipeWithCate(id uint) (models.Recipe, bool) {
 	recipe, err := repository.FindOneRecipePreloadCate(id)
 	if err != nil {
-		return entity.Recipe{}, false
+		return models.Recipe{}, false
 	}
 	return recipe, true
 }

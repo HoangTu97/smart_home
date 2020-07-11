@@ -1,7 +1,7 @@
 package recipe
 
 import (
-	"Food/entity"
+	"Food/models"
 	"strings"
 )
 
@@ -22,7 +22,7 @@ type RecipeDetailResponseDTO struct {
 }
 
 // CreateRecipeDetailResponseDTO godoc
-func CreateRecipeDetailResponseDTO(recipe entity.Recipe) RecipeDetailResponseDTO {
+func CreateRecipeDetailResponseDTO(recipe models.Recipe) RecipeDetailResponseDTO {
 	cates := make([]RecipeDetail_CateResponseDTO, len(recipe.Categories))
 
 	for i, v := range recipe.Categories {

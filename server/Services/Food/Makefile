@@ -1,2 +1,2 @@
 dev:
-	go run *.go
+	swag init && go build . && ./Food
