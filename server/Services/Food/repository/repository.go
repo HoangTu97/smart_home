@@ -18,7 +18,7 @@ func Setup() {
 	// 	setting.DatabaseSetting.Password,
 	// 	setting.DatabaseSetting.Host,
 	// 	setting.DatabaseSetting.Name))
-	db, err := gorm.Open("sqlite3", "test.db")
+	db, err := gorm.Open("sqlite3", "database.db")
 	if err != nil {
 		log.Fatalf("models.Setup err: %v", err)
 	}
@@ -56,21 +56,7 @@ func initDB(db *gorm.DB) {
 		db.Create(&cate1)
 		db.Create(&cate2)
 
-		// ingre1 := modelsIngredient{Name: "Oil", Image: "https://ak7.picdn.net/shutterstock/videos/27252067/thumb/11.jpg", Description: "oil"}
-		// ingre2 := modelsIngredient{Name: "Salt", Image: "https://image.freepik.com/free-photo/sea-salt-wooden-bowl-isolated-white-background_29402-416.jpg", Description: "saltt"}
-		// ingre3 := modelsIngredient{Name: "Russet potatoes", Image: "http://www.valleyspuds.com/wp-content/uploads/Russet-Potatoes-cut.jpg", Description: "Russet potatoe"}
-		// DB.Create(&ingre1)
-		// DB.Create(&ingre2)
-		// DB.Create(&ingre3)
-
 		recipe1 := models.Recipe{Name: "Oatmeal Cookies", Description: "abc", Image: "abc", Photos: "abc", Duration: 15, Categories: []models.Category{cate1, cate2}}
 		db.Create(&recipe1)
-
-		// ingres1 := modelsRecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre1.ID, Quantity: 200}
-		// ingres2 := modelsRecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre2.ID, Quantity: 5}
-		// ingres3 := modelsRecipeIngredients{RecipeID: recipe1.ID, IngredientID: ingre3.ID, Quantity: 300}
-		// DB.Create(&ingres1)
-		// DB.Create(&ingres2)
-		// DB.Create(&ingres3)
 	}
 }

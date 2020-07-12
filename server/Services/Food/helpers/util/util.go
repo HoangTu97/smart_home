@@ -1,10 +1,10 @@
 package util
 
 import (
-	"Food/helpers/setting"
+	"Food/config"
 )
 
 // Setup Initialize the util
 func Setup() {
-	jwtSecret = []byte(setting.AppSetting.JwtSecret)
+	jwtSecret = []byte(config.AppSetting.JwtSecret)
 }

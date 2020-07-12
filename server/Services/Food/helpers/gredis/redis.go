@@ -1,7 +1,7 @@
 package gredis
 
 import (
-	"Food/helpers/setting"
+	"Food/config"
 	"encoding/json"
 	"time"
 
@@ -13,16 +13,16 @@ var RedisConn *redis.Pool
 // Setup Initialize the Redis instance
 func Setup() error {
 	RedisConn = &redis.Pool{
-		MaxIdle:     setting.RedisSetting.MaxIdle,
-		MaxActive:   setting.RedisSetting.MaxActive,
-		IdleTimeout: setting.RedisSetting.IdleTimeout,
+		MaxIdle:     config.RedisSetting.MaxIdle,
+		MaxActive:   config.RedisSetting.MaxActive,
+		IdleTimeout: config.RedisSetting.IdleTimeout,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp", setting.RedisSetting.Host)
+			c, err := redis.Dial("tcp", config.RedisSetting.Host)
 			if err != nil {
 				return nil, err
 			}
-			if setting.RedisSetting.Password != "" {
-				if _, err := c.Do("AUTH", setting.RedisSetting.Password); err != nil {
+			if config.RedisSetting.Password != "" {
+				if _, err := c.Do("AUTH", config.RedisSetting.Password); err != nil {
 					c.Close()
 					return nil, err
 				}

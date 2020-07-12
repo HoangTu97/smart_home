@@ -7,16 +7,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"Food/config"
 	"Food/helpers/gredis"
 	"Food/helpers/logging"
-	"Food/helpers/setting"
 	"Food/helpers/util"
 	"Food/repository"
 	"Food/routers"
 )
 
 func init() {
-	setting.Setup()
+	config.Setup()
 	repository.Setup()
 	logging.Setup()
 	gredis.Setup()
@@ -28,12 +28,12 @@ func init() {
 // @description An example of gin
 // @license.name MIT
 func main() {
-	gin.SetMode(setting.ServerSetting.RunMode)
+	gin.SetMode(config.ServerSetting.RunMode)
 
 	routersInit := routers.InitRouter()
-	readTimeout := setting.ServerSetting.ReadTimeout
-	writeTimeout := setting.ServerSetting.WriteTimeout
-	endPoint := fmt.Sprintf(":%s", setting.ServerSetting.HTTPPort)
+	readTimeout := config.ServerSetting.ReadTimeout
+	writeTimeout := config.ServerSetting.WriteTimeout
+	endPoint := fmt.Sprintf(":%s", config.ServerSetting.HTTPPort)
 	maxHeaderBytes := 1 << 20
 
 	server := &http.Server{
@@ -48,7 +48,7 @@ func main() {
 
 	server.ListenAndServe()
 
-	// if setting.ServerSetting.SSL {
+	// if config.ServerSetting.SSL {
 
 	// 	SSLKeys := &struct {
 	// 		CERT string
@@ -59,9 +59,9 @@ func main() {
 	// 	SSLKeys.CERT = "./cert/myCA.cer"
 	// 	SSLKeys.KEY = "./cert/myCA.key"
 
-	// 	routersInit.RunTLS(":"+setting.ServerSetting.HTTPPort, SSLKeys.CERT, SSLKeys.KEY)
+	// 	routersInit.RunTLS(":"+config.ServerSetting.HTTPPort, SSLKeys.CERT, SSLKeys.KEY)
 	// } else {
-	// 	routersInit.Run(":" + setting.ServerSetting.HTTPPort)
+	// 	routersInit.Run(":" + config.ServerSetting.HTTPPort)
 	// }
 
 	repository.CloseDB()
