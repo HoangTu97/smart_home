@@ -12,6 +12,7 @@ type Token struct {
 	UserID   string `json:"userId"`
 	Name     string `json:"name"`
 	Password string `json:"password"`
+	Roles    []string `json:"roles"`
 	*jwt.StandardClaims
 }
 
@@ -49,4 +50,12 @@ func ParseToken(token string) (*Token, error) {
 	}
 
 	return nil, err
+}
+
+func (t *Token) GetUserID() (string) {
+	return t.UserID
+}
+
+func (t *Token) GetUserName() (string) {
+	return t.Name
 }

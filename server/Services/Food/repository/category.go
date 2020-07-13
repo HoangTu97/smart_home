@@ -1,13 +1,14 @@
 package repository
 
 import (
+	"Food/config"
 	"Food/models"
 	"Food/helpers/page"
 	"Food/helpers/pagination"
 )
 
 func SaveCate(category models.Category) (models.Category, error) {
-	result := GetDB().Save(&category)
+	result := config.GetDB().Save(&category)
 	if result.Error != nil {
 		return models.Category{}, result.Error
 	}
@@ -27,7 +28,7 @@ func FindOneCate(id uint) (models.Category, error) {
 	// 	logging.Info("FindOneCate", err)
 	// }
 
-	result := GetDB().First(&category, id)
+	result := config.GetDB().First(&category, id)
 	if result.Error != nil {
 		return models.Category{}, result.Error
 	}
@@ -38,7 +39,7 @@ func FindOneCate(id uint) (models.Category, error) {
 
 func FindOneCateByName(name string) ([]models.Category, error) {
 	var categories []models.Category
-	result := GetDB().Where("name LIKE ?", "%" + name + "%").Find(&categories)
+	result := config.GetDB().Where("name LIKE ?", "%" + name + "%").Find(&categories)
 	if result.Error != nil {
 		return []models.Category{}, result.Error
 	}
@@ -47,7 +48,7 @@ func FindOneCateByName(name string) ([]models.Category, error) {
 
 func FindAllCate() []models.Category {
 	var categories []models.Category
-	GetDB().Find(&categories)
+	config.GetDB().Find(&categories)
 	return categories
 }
 
@@ -55,7 +56,7 @@ func FindPageCate(pageable pagination.Pageable) page.Page {
 	var categories []models.Category
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      GetDB().Preload("Recipes"),
+        DB:      config.GetDB().Preload("Recipes"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -66,7 +67,7 @@ func FindPageCate(pageable pagination.Pageable) page.Page {
 }
 
 func DeleteCate(category models.Category) error {
-	result := GetDB().Delete(&category)
+	result := config.GetDB().Delete(&category)
 	if result.Error != nil {
 		return result.Error
 	}

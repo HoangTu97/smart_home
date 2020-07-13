@@ -11,13 +11,12 @@ import (
 	"Food/helpers/gredis"
 	"Food/helpers/logging"
 	"Food/helpers/util"
-	"Food/repository"
 	"Food/routers"
 )
 
 func init() {
 	config.Setup()
-	repository.Setup()
+	config.SetupDB()
 	logging.Setup()
 	gredis.Setup()
 	util.Setup()
@@ -64,5 +63,5 @@ func main() {
 	// 	routersInit.Run(":" + config.ServerSetting.HTTPPort)
 	// }
 
-	repository.CloseDB()
+	config.CloseDB()
 }

@@ -1,18 +1,19 @@
 package repository
 
 import (
+	"Food/config"
 	"Food/models"
 )
 
 func FindAllIngredient() []models.Ingredient {
 	var ingredients []models.Ingredient
-	GetDB().Find(&ingredients)
+	config.GetDB().Find(&ingredients)
 	return ingredients
 }
 
 func FindOneIngredient(id uint) (models.Ingredient, error) {
 	var ingredient models.Ingredient
-	result := GetDB().First(&ingredient, id)
+	result := config.GetDB().First(&ingredient, id)
 	if result.Error != nil {
 		return models.Ingredient{}, result.Error
 	}
@@ -21,6 +22,6 @@ func FindOneIngredient(id uint) (models.Ingredient, error) {
 
 func FindIngredientByName(name string) []models.Ingredient {
 	var ingredients []models.Ingredient
-	GetDB().Where("name LIKE ?", "%" + name + "%").Find(&ingredients)
+	config.GetDB().Where("name LIKE ?", "%" + name + "%").Find(&ingredients)
 	return ingredients
 }

@@ -1,4 +1,4 @@
-package repository
+package config
 
 import (
 	"Food/models"
@@ -12,7 +12,7 @@ import (
 var DB *gorm.DB
 
 // Setup initializes the database instance
-func Setup() {
+func SetupDB() {
 	// db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 	// 	setting.DatabaseSetting.User,
 	// 	setting.DatabaseSetting.Password,

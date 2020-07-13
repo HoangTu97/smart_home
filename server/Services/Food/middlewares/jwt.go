@@ -23,7 +23,7 @@ func JWT(c *gin.Context) {
 	}
 	token = strings.Fields(token)[1]
 
-	_, err := util.ParseToken(token)
+	parsedToken, err := util.ParseToken(token)
 	if err != nil {
 		switch err.(*jwt.ValidationError).Errors {
 		case jwt.ValidationErrorExpired:
@@ -38,6 +38,8 @@ func JWT(c *gin.Context) {
 		c.Abort()
 		return
 	}
+
+	c.Set("UserInfo", parsedToken)
 
 	c.Next()
 }
