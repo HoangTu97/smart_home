@@ -17,7 +17,6 @@ import (
 // Register register
 // @Summary Register
 // @Accept  json
-// @Produce  json
 // @Param RegisterDTO body requestuser.RegisterDTO true "RegisterDTO"
 // @Success 200 {object} response.APIResponseDTO "desc"
 // @Router /api/public/user/register [post]
@@ -40,6 +39,12 @@ func Register(c *gin.Context) {
 	response.CreateSuccesResponse(c, nil)
 }
 
+// Login login
+// @Summary Login
+// @Accept  json
+// @Param LoginDTO body requestuser.LoginDTO true "LoginDTO"
+// @Success 200 {object} response.APIResponseDTO "desc"
+// @Router /api/public/user/login [post]
 func Login(c *gin.Context) {
 	var loginDTO RequestUser.LoginDTO
 	errCode := request.BindAndValid(c, &loginDTO)
