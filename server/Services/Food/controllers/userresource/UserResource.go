@@ -54,7 +54,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	tokenString, error := util.GenerateToken(userDTO.ID, userDTO.Name, userDTO.Password)
+	tokenString, error := util.GenerateToken(userDTO.UserID, userDTO.Name, userDTO.Password)
 	if error != nil {
 		logging.Error("Signed token error: ", error)
 	}
@@ -62,5 +62,4 @@ func Login(c *gin.Context) {
 	response.CreateSuccesResponse(c, user.LoginResponseDTO{
 		Token: tokenString,
 	})
-	return;
 }

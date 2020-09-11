@@ -19,7 +19,7 @@ func CreateUser(userDTO dto.UserDTO) (dto.UserDTO, bool) {
 
 	user := mapper.ToUser(userDTO)
 	repository.SaveUser(user)
-	logging.Info(user.ID)
+
 	return mapper.ToUserDTO(user), true
 }
 

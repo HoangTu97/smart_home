@@ -9,7 +9,8 @@ import (
 
 func ToUserDTO(entity models.User) dto.UserDTO {
 	return dto.UserDTO{
-		ID:         entity.ID.String(),
+		ID:         entity.ID,
+		UserID:     entity.UserID.String(),
 		CreatedAt:  entity.CreatedAt,
 		UpdatedAt:  entity.UpdatedAt,
 		DeletedAt:  entity.DeletedAt,
@@ -27,12 +28,13 @@ func ToUserDTO(entity models.User) dto.UserDTO {
 
 func ToUser(dto dto.UserDTO) models.User {
 	var id uuid.UUID
-	if len(dto.ID) > 0 {
-		id = uuid.Must(uuid.FromString(dto.ID))
+	if len(dto.UserID) > 0 {
+		id = uuid.Must(uuid.FromString(dto.UserID))
 	}
 
 	return models.User{
-		ID:         id,
+		ID:         dto.ID,
+		UserID:     id,
 		CreatedAt:  dto.CreatedAt,
 		UpdatedAt:  dto.UpdatedAt,
 		DeletedAt:  dto.DeletedAt,

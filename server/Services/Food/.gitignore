@@ -1,2 +1,5 @@
 runtime/
 *.db
+Food
+
+.DS_Store

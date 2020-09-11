@@ -1,18 +1,18 @@
 package models
 
 import (
-	"time"
-
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
+	"time"
 )
 
 // User entity
 type User struct {
-	ID       uuid.UUID `gorm:"type:uuid;primary_key;"`
-	Name     string `gorm:"type:varchar(255)"`
-	Address  string `gorm:"type:varchar(255)"`
-	Password string `gorm:"type:varchar(255)" json:"Password"`
+	ID       uint      `gorm:"primary_key"`
+	UserID   uuid.UUID `gorm:"type:uuid;index:user_id"`
+	Name     string    `gorm:"type:varchar(255)"`
+	Address  string    `gorm:"type:varchar(255)"`
+	Password string    `gorm:"type:varchar(255)" json:"Password"`
 
 	// features
 	Age        uint8
@@ -28,5 +28,5 @@ type User struct {
 }
 
 func (u *User) BeforeCreate(scope *gorm.Scope) (err error) {
-	return scope.SetColumn("ID", uuid.NewV4())
+	return scope.SetColumn("UserID", uuid.NewV4())
 }

@@ -10,6 +10,11 @@ func MustUint8(f string) uint8 {
 	return v
 }
 
+func MustUint32(f string) uint32 {
+	v, _ := Uint32(f)
+	return v
+}
+
 func MustUint64(f string) uint64 {
 	v, _ := Uint64(f)
 	return v

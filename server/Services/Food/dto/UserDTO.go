@@ -4,7 +4,8 @@ import "time"
 
 // UserDTO godoc
 type UserDTO struct {
-	ID       string
+	ID       uint
+	UserID   string
 	Name     string
 	Address  string
 	Password string
