@@ -18,8 +18,8 @@ import (
 // @Summary Register
 // @Accept  json
 // @Produce  json
-// @.....Param body body RequestUser.RegisterDTO true "RegisterDTO"
-// @.....Success 200 {object} response.APIResponseDTO{data=nil} "desc"
+// @Param RegisterDTO body requestuser.RegisterDTO true "RegisterDTO"
+// @Success 200 {object} response.APIResponseDTO "desc"
 // @Router /api/public/user/register [post]
 func Register(c *gin.Context) {
 	var registerDTO RequestUser.RegisterDTO
