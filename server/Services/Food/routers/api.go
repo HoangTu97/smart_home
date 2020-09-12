@@ -4,6 +4,7 @@ import (
 	CategoryResource "Food/controllers/categoryresource"
 	RecipeResource "Food/controllers/reciperesource"
 	UserResource "Food/controllers/userresource"
+	ImageResource "Food/controllers/imageresource"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,6 +32,13 @@ func InitRouterApi(r *gin.Engine) {
 			{
 				publicUserRoutes.POST("/register", UserResource.Register)
 				publicUserRoutes.POST("/login", UserResource.Login)
+			}
+
+			publicImageRoutes := publicRoutes.Group("/image")
+			{
+				publicImageRoutes.POST("/upload", ImageResource.Upload)
+				publicImageRoutes.GET("/download/:id", ImageResource.Download)
+				publicImageRoutes.GET("/display/:id", ImageResource.FileDisplay)
 			}
 		}
 

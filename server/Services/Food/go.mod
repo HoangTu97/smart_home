@@ -7,6 +7,7 @@ require (
 	github.com/astaxie/beego v1.12.1
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gabriel-vasile/mimetype v1.1.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-ini/ini v1.57.0
 	github.com/go-openapi/spec v0.19.8 // indirect
