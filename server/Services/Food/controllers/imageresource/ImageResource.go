@@ -49,7 +49,7 @@ func Upload(c *gin.Context) {
 // @Tags Image
 // @Produce octet-stream
 // @Param id path string true "Image id"
-// @Router /api/public/image/download/{id} [get]
+// @Router /api/public/image/{id}/download [get]
 func Download(c *gin.Context) {
 	filename := converter.MustString(c.Param("id"))
 
@@ -66,7 +66,7 @@ func Download(c *gin.Context) {
 // @Tags Image
 // @Produce octet-stream
 // @Param id path string true "Image id"
-// @Router /api/public/image/display/{id} [get]
+// @Router /api/public/image/{id} [get]
 func FileDisplay(c *gin.Context) {
 	filename := converter.MustString(c.Param("id"))
 

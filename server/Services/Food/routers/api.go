@@ -37,8 +37,8 @@ func InitRouterApi(r *gin.Engine) {
 			publicImageRoutes := publicRoutes.Group("/image")
 			{
 				publicImageRoutes.POST("/upload", ImageResource.Upload)
-				publicImageRoutes.GET("/download/:id", ImageResource.Download)
-				publicImageRoutes.GET("/display/:id", ImageResource.FileDisplay)
+				publicImageRoutes.GET("/:id", ImageResource.FileDisplay)
+				publicImageRoutes.GET("/:id/download", ImageResource.Download)
 			}
 		}
 

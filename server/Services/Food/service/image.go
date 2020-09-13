@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	location = "./Images"
+	location = "./data/Images"
 )
 
 func GenFileBaseFileName(extension string) string {

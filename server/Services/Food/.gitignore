@@ -1,5 +1,6 @@
 runtime/
 docs/
+data/
 *.db
 Food
 
