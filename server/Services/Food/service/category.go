@@ -49,6 +49,6 @@ func DeleteCate(id uint) bool {
 	if err != nil {
 		return false
 	}
-	repository.DeleteCate(category)
+	_ = repository.DeleteCate(category)
 	return true
 }

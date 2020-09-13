@@ -16,7 +16,7 @@ import (
 
 // Upload upload image
 // @Summary Upload
-// @Tags Image
+// @Tags PublicImage
 // @Accept mpfd
 // @Param file formData file true "Body with file"
 // @Success 200 {object} response.APIResponseDTO{data=string} "desc"
@@ -46,7 +46,7 @@ func Upload(c *gin.Context) {
 
 // Download download image
 // @Summary Download
-// @Tags Image
+// @Tags PublicImage
 // @Produce octet-stream
 // @Param id path string true "Image id"
 // @Router /api/public/image/{id}/download [get]
@@ -63,7 +63,7 @@ func Download(c *gin.Context) {
 
 // Display display image
 // @Summary Display
-// @Tags Image
+// @Tags PublicImage
 // @Produce octet-stream
 // @Param id path string true "Image id"
 // @Router /api/public/image/{id} [get]

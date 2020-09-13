@@ -16,7 +16,7 @@ import (
 
 // Register register
 // @Summary Register
-// @Tags User
+// @Tags PublicUser
 // @Accept  json
 // @Param RegisterDTO body requestuser.RegisterDTO true "RegisterDTO"
 // @Success 200 {object} response.APIResponseDTO "desc"
@@ -42,7 +42,7 @@ func Register(c *gin.Context) {
 
 // Login login
 // @Summary Login
-// @Tags User
+// @Tags PublicUser
 // @Accept  json
 // @Param LoginDTO body requestuser.LoginDTO true "LoginDTO"
 // @Success 200 {object} response.APIResponseDTO "desc"

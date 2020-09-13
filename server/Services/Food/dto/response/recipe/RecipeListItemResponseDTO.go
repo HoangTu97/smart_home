@@ -4,6 +4,6 @@ package recipe
 type RecipeListItemResponseDTO struct {
 	ID         uint     `json:"id"`
 	Title      string   `json:"title"`
-	PhotoURL   string   `json:"photo_url"`
+	PhotoURL   string   `json:"photoUrl"`
 	Categories []string `json:"categories"`
 }

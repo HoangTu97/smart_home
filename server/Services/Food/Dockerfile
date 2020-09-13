@@ -1,4 +1,4 @@
-FROM golang:1.14-rc-alpine
+FROM golang:1.15-rc-alpine
 
 ENV GOPROXY https://goproxy.cn,direct
 ADD . $GOPATH/src/github.com/golang/smartHome

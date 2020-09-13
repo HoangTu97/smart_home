@@ -10,6 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Category all
+// @Summary GetAll
+// @Tags PublicCategory
+// @Accept json
+// @Param page query int true "page"
+// @Param size query int true "size"
+// @Success 200 {object} response.APIResponseDTO{data=category.CategoryListResponseDTO{items=category.CategoryListItemResponseDTO{}}} "desc"
+// @Router /api/public/category/getAll [get]
 func GetAll(c *gin.Context) {
 	pageable := pagination.GetPage(c)
 

@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Recipe GetByCategory
+// @Summary GetByCategory
+// @Tags PublicRecipe
+// @Accept json
+// @Param page query int true "page"
+// @Param size query int true "size"
+// @Param categoryId path int true "categoryId"
+// @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeListResponseDTO} "desc"
+// @Router /api/public/recipe/getByCategory/:categoryId [get]
 func GetByCategory(c *gin.Context) {
 	pageable := pagination.GetPage(c)
 	id := converter.MustUint(c.Param("categoryId"))
@@ -25,6 +34,13 @@ func GetByCategory(c *gin.Context) {
 	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }
 
+// Recipe GetCountByCategory
+// @Summary GetCountByCategory
+// @Tags PublicRecipe
+// @Accept json
+// @Param categoryId path int true "categoryId"
+// @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeCountByCateResponseDTO} "desc"
+// @Router /api/public/recipe/countByCategory/:categoryId [get]
 func GetCountByCategory(c *gin.Context) {
 	id := converter.MustUint(c.Param("categoryId"))
 
@@ -85,6 +101,15 @@ func GetByIngredientName(c *gin.Context) {
 	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }
 
+// Recipe getByRecipeName
+// @Summary GetByRecipeName
+// @Tags PublicRecipe
+// @Accept json
+// @Param page query int true "page"
+// @Param size query int true "size"
+// @Param name query string true "name"
+// @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeListResponseDTO} "desc"
+// @Router /api/public/recipe/searchByRecipeName [get]
 func GetByRecipeName(c *gin.Context) {
 	pageable := pagination.GetPage(c)
 	recipeName := converter.MustString(c.Query("name"))
@@ -94,6 +119,14 @@ func GetByRecipeName(c *gin.Context) {
 	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }
 
+// Recipe all
+// @Summary GetAll
+// @Tags PublicRecipe
+// @Accept json
+// @Param page query int true "page"
+// @Param size query int true "size"
+// @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeListResponseDTO} "desc"
+// @Router /api/public/recipe/getAll [get]
 func GetAll(c *gin.Context) {
 	pageable := pagination.GetPage(c)
 
@@ -102,6 +135,13 @@ func GetAll(c *gin.Context) {
 	response.CreateSuccesResponse(c, recipe.CreateRecipeListResponseDTOFromPage(page))
 }
 
+// Recipe getDetailByID
+// @Summary GetDetailByID
+// @Tags PublicRecipe
+// @Accept json
+// @Param id path int true "id"
+// @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeDetailResponseDTO} "desc"
+// @Router /api/public/recipe/detail/:id [get]
 func GetDetailByID(c *gin.Context) {
 	id := converter.MustUint(c.Param("id"))
 
