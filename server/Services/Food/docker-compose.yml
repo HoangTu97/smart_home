@@ -27,7 +27,7 @@ services:
         max_replicas_per_node: 1
         constraints:
           - "node.role==manager"
-  food:
+  food_app:
     container_name: food_app
     build:
       dockerfile: Dockerfile
@@ -46,5 +46,5 @@ volumes:
   dbdata:
     driver_opts: 
       o: bind
-      device: ./data/
+      device: /Users/nguyenxuanhoangtu/Documents/projet/smartHome/server/Services/Food/data/
       type: bind
