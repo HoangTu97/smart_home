@@ -1,4 +1,7 @@
-FROM golang:1.15-rc-alpine
+FROM golang:1.15.2
+
+RUN apt-get update
+RUN apt-get install -y build-essential
 
 ENV GOPROXY https://goproxy.cn,direct
 ADD . $GOPATH/src/github.com/golang/smartHome
