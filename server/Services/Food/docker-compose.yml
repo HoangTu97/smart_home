@@ -4,7 +4,7 @@ services:
     image: redis:alpine
     hostname: redis
     ports:
-      - "6379"
+      - "6379:6379/tcp"
     networks: 
       - backend
     deploy:
@@ -16,10 +16,10 @@ services:
           cpus: 0.5
           memory: 50M
   db:
-    image: postgres:9.4
+    image: mongo:latest
     hostname: db
-    volumes:
-      - dbdata:/var/lib/postgresql/data
+    # volumes:
+    #   - dbdata:/var/lib/postgresql/data
     networks:
       - backend
     deploy:
@@ -27,21 +27,27 @@ services:
         max_replicas_per_node: 1
         constraints:
           - "node.role==manager"
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
   food_app:
     container_name: food_app
     build:
       dockerfile: Dockerfile
       context: ./
+    hostname: food_app
     depends_on: 
       - redis
       - db
     networks: 
       - backend
     ports:
-      - "8080"
+      - "8080:8080"
+
 networks:
   backend:
     driver: bridge
+
 volumes:
   dbdata:
     driver_opts: 

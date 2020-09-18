@@ -1,6 +1,7 @@
-FROM golang:1.15.2
+FROM golang:1.15.2-alpine
 
-RUN apt-get update && apt-get install -y build-essential && go get -u github.com/swaggo/swag/cmd/swag
+RUN apk add --no-cache gcc musl-dev bash git openssh make \
+    && go get -u github.com/swaggo/swag/cmd/swag
 
 ENV GOPROXY https://goproxy.cn,direct
 ADD . $GOPATH/src/github.com/golang/smartHome
