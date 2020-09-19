@@ -14,7 +14,6 @@ require (
 	github.com/go-openapi/swag v0.19.9 // indirect
 	github.com/golang/protobuf v1.4.0 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible
-	github.com/jinzhu/gorm v1.9.12
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/stretchr/testify v1.5.1 // indirect
@@ -29,4 +28,6 @@ require (
 	golang.org/x/text v0.3.3 // indirect
 	golang.org/x/tools v0.0.0-20200710042808-f1c4188a97a1 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
+	gorm.io/driver/postgres v1.0.0
+	gorm.io/gorm v1.20.1
 )

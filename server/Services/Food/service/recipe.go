@@ -59,6 +59,6 @@ func FindOneRecipeWithCate(id uint) (models.Recipe, bool) {
 	return recipe, true
 }
 
-func CountRecipeByCateID(cateID uint) int {
+func CountRecipeByCateID(cateID uint) int64 {
 	return repository.CountRecipeByCateID(cateID)
 }

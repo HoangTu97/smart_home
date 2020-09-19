@@ -4,7 +4,7 @@ services:
     image: redis:alpine
     hostname: redis
     ports:
-      - "6379:6379/tcp"
+      - "6379:6379"
     networks: 
       - backend
     deploy:
@@ -16,22 +16,23 @@ services:
           cpus: 0.5
           memory: 50M
   db:
-    image: mongo:latest
+    image: postgres:13-alpine
     hostname: db
-    # volumes:
-    #   - dbdata:/var/lib/postgresql/data
+    volumes:
+      - dbdata:/var/lib/postgresql/data
     networks:
       - backend
+    ports: 
+      - "5432:5432"
     deploy:
       placement:
         max_replicas_per_node: 1
         constraints:
           - "node.role==manager"
     environment: 
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
   food_app:
-    container_name: food_app
     build:
       dockerfile: Dockerfile
       context: ./
@@ -52,5 +53,5 @@ volumes:
   dbdata:
     driver_opts: 
       o: bind
-      device: /Users/nguyenxuanhoangtu/Documents/projet/smartHome/server/Services/Food/data/
+      device: /Users/nguyenxuanhoangtu/Documents/projet/smartHome/server/Services/Food/data/db/
       type: bind

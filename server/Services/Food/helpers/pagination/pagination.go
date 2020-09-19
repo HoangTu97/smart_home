@@ -19,8 +19,8 @@ type pageable struct {
 
 // GetPage get page parameters
 func GetPage(c *gin.Context) Pageable {
-	page := converter.MustInt(c.Query("page"))
-	size := converter.MustInt(c.Query("size"))
+	page := converter.MustInt(c.DefaultQuery("page", "0"))
+	size := converter.MustInt(c.DefaultQuery("size", "20"))
 
 	return &pageable{pageNumber: page, pageSize: size}
 }

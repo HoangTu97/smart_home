@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite" // sqlite
+	"gorm.io/driver/postgres" // postgres
+	"gorm.io/gorm"
 
 	"Food/helpers/converter"
 	"Food/models"
@@ -20,18 +20,25 @@ var DB *gorm.DB
 
 // Setup initializes the database instance
 func SetupDB() {
-	// db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-	// 	setting.DatabaseSetting.User,
-	// 	setting.DatabaseSetting.Password,
-	// 	setting.DatabaseSetting.Host,
-	// 	setting.DatabaseSetting.Name))
-	db, err := gorm.Open("sqlite3", "database.db")
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN: fmt.Sprintf("host=%s user=%s password=%s dbname=%s ",
+			DatabaseSetting.Host,
+			DatabaseSetting.User,
+			DatabaseSetting.Password,
+			DatabaseSetting.Name),
+	}), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("models.Setup err: %v", err)
 	}
 
-	db.DB().SetMaxIdleConns(10)
-	db.DB().SetMaxOpenConns(100)
+	sqlDB, errSqlDB := db.DB()
+	if errSqlDB != nil {
+		log.Fatalf("models.Setup db.DB() err: %v", err)
+	}
+
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.Stats()
 
 	migrateDB(db)
 	// initDB(db)
@@ -41,7 +48,8 @@ func SetupDB() {
 
 // CloseDB closes database connection (unnecessary)
 func CloseDB() {
-	defer DB.Close()
+	sqlDB, _ := DB.DB()
+	defer sqlDB.Close()
 }
 
 // GetDB get connection
@@ -50,7 +58,7 @@ func GetDB() *gorm.DB {
 }
 
 func migrateDB(db *gorm.DB) {
-	db.AutoMigrate(
+	_ = db.AutoMigrate(
 		&models.Category{},
 		&models.Recipe{},
 		&models.Ingredient{},
@@ -61,7 +69,7 @@ func migrateDB(db *gorm.DB) {
 }
 
 func initDB(db *gorm.DB) {
-	count := 0
+	var count int64 = 0
 	db.Model(&models.Category{}).Count(&count)
 	if count == 0 {
 		// cate1 := models.Category{Name: "Mexican Food", Image: "https://ak1.picdn.net/shutterstock/videos/19498861/thumb/1.jpg"}

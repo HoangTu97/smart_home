@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	uuid "github.com/satori/go.uuid"
 	"time"
 )
@@ -27,6 +27,7 @@ type User struct {
 	DeletedAt *time.Time `sql:"index"`
 }
 
-func (u *User) BeforeCreate(scope *gorm.Scope) (err error) {
-	return scope.SetColumn("UserID", uuid.NewV4())
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	u.UserID = uuid.NewV4()
+	return
 }

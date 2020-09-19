@@ -8,7 +8,7 @@ import (
 // RecipeListResponseDTO godoc
 type RecipeListResponseDTO struct {
 	Items      []RecipeListItemResponseDTO `json:"items"`
-	TotalItems int                         `json:"totalItems"`
+	TotalItems int64                       `json:"totalItems"`
 }
 
 // CreateRecipeListResponseDTOFromPage create page from page models.Recipe

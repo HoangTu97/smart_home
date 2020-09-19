@@ -16,7 +16,7 @@ type CategoryListItemResponseDTO struct {
 // CategoryListResponseDTO godoc
 type CategoryListResponseDTO struct {
 	Items      []CategoryListItemResponseDTO `json:"items"`
-	TotalItems int                           `json:"totalItems"`
+	TotalItems int64                         `json:"totalItems"`
 }
 
 // CreateCategoryListResponseDTOFromPage create page from page models.Category

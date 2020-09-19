@@ -35,7 +35,7 @@ func FindPageRecipeByCateID(cateID uint, pageable pagination.Pageable) page.Page
 	var recipes []models.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Model(&models.Category{ID: cateID}).Related(&recipes, "Recipes").Preload("Categories"),
+        DB:      config.GetDB().Model(&models.Category{ID: cateID}).Association("Recipes").DB.Find(&recipes).Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -49,7 +49,7 @@ func FindPageRecipeByCates(cates []models.Category, pageable pagination.Pageable
 	var recipes []models.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Model(&cates).Related(&recipes, "Recipes").Preload("Categories"),
+        DB:      config.GetDB().Model(&cates).Association("Recipes").DB,
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -77,7 +77,7 @@ func FindPageRecipeByIngredientID(ingredientID uint, pageable pagination.Pageabl
 	var recipes []models.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Where("id IN (?)", config.GetDB().Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id = ?", ingredientID).SubQuery()).Preload("Categories"),
+        DB:      config.GetDB().Where("id IN (?)", config.GetDB().Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id = ?", ingredientID)).Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -91,7 +91,7 @@ func FindPageRecipeByIngredientIDIn(ingredientIDs []uint, pageable pagination.Pa
 	var recipes []models.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Where("id IN (?)", config.GetDB().Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id IN (?)", ingredientIDs).SubQuery()).Preload("Categories"),
+        DB:      config.GetDB().Where("id IN (?)", config.GetDB().Table("recipe_ingredients").Select("ingredient_id").Where("recipe_id IN (?)", ingredientIDs)).Preload("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -121,8 +121,8 @@ func FindRecipeByName(name string) []models.Recipe {
 	return recipes
 }
 
-func CountRecipeByCateID(cateID uint) int {
-	var result int
+func CountRecipeByCateID(cateID uint) int64 {
+	var result int64
 	config.GetDB().Table("cate_recipes").Where("category_id = ?", cateID).Count(&result)
 	return result
 }
