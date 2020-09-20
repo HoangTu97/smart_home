@@ -65,6 +65,8 @@ func migrateDB(db *gorm.DB) {
 		&models.RecipeIngredients{},
 		&models.User{},
 		&models.UserRecipeInteraction{},
+		&models.Post{},
+		&models.Comment{},
 	)
 }
 
