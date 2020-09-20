@@ -2,9 +2,10 @@ package routers
 
 import (
 	CategoryResource "Food/controllers/categoryresource"
+	ImageResource "Food/controllers/imageresource"
+	PostResource "Food/controllers/postresource"
 	RecipeResource "Food/controllers/reciperesource"
 	UserResource "Food/controllers/userresource"
-	ImageResource "Food/controllers/imageresource"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,15 +13,15 @@ import (
 func InitRouterApi(r *gin.Engine) {
 	apiRoutes := r.Group("/api")
 	{
-		publicRoutes := apiRoutes.Group("/public")
 		{
-			publicCategoryRoutes := publicRoutes.Group("/category")
+			publicRoutes := apiRoutes.Group("/public")
 			{
+				publicCategoryRoutes := publicRoutes.Group("/category")
 				publicCategoryRoutes.GET("/getAll", CategoryResource.GetAll)
 			}
 
-			publicRecipeRoutes := publicRoutes.Group("/recipe")
 			{
+				publicRecipeRoutes := publicRoutes.Group("/recipe")
 				publicRecipeRoutes.GET("/getAll", RecipeResource.GetAll)
 				publicRecipeRoutes.GET("/detail/:id", RecipeResource.GetDetailByID)
 				publicRecipeRoutes.GET("/getByCategory/:categoryId", RecipeResource.GetByCategory)
@@ -28,17 +29,22 @@ func InitRouterApi(r *gin.Engine) {
 				publicRecipeRoutes.GET("/searchByRecipeName", RecipeResource.GetByRecipeName)
 			}
 
-			publicUserRoutes := publicRoutes.Group("/user")
 			{
+				publicUserRoutes := publicRoutes.Group("/user")
 				publicUserRoutes.POST("/register", UserResource.Register)
 				publicUserRoutes.POST("/login", UserResource.Login)
 			}
 
-			publicImageRoutes := publicRoutes.Group("/image")
 			{
+				publicImageRoutes := publicRoutes.Group("/image")
 				publicImageRoutes.POST("/upload", ImageResource.Upload)
 				publicImageRoutes.GET("/:id", ImageResource.FileDisplay)
 				publicImageRoutes.GET("/:id/download", ImageResource.Download)
+			}
+
+			{
+				publicPostRoutes := publicRoutes.Group("/post")
+				publicPostRoutes.GET("", PostResource.GetAll)
 			}
 		}
 

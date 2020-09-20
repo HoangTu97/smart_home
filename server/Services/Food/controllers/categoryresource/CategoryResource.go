@@ -14,8 +14,8 @@ import (
 // @Summary GetAll
 // @Tags PublicCategory
 // @Accept json
-// @Param page query int true "page"
-// @Param size query int true "size"
+// @Param page query int false "page"
+// @Param size query int false "size"
 // @Success 200 {object} response.APIResponseDTO{data=category.CategoryListResponseDTO{items=category.CategoryListItemResponseDTO{}}} "desc"
 // @Router /api/public/category/getAll [get]
 func GetAll(c *gin.Context) {

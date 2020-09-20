@@ -14,8 +14,8 @@ import (
 // @Summary GetByCategory
 // @Tags PublicRecipe
 // @Accept json
-// @Param page query int true "page"
-// @Param size query int true "size"
+// @Param page query int false "page"
+// @Param size query int false "size"
 // @Param categoryId path int true "categoryId"
 // @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeListResponseDTO} "desc"
 // @Router /api/public/recipe/getByCategory/:categoryId [get]
@@ -105,8 +105,8 @@ func GetByIngredientName(c *gin.Context) {
 // @Summary GetByRecipeName
 // @Tags PublicRecipe
 // @Accept json
-// @Param page query int true "page"
-// @Param size query int true "size"
+// @Param page query int false "page"
+// @Param size query int false "size"
 // @Param name query string true "name"
 // @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeListResponseDTO} "desc"
 // @Router /api/public/recipe/searchByRecipeName [get]
@@ -123,8 +123,8 @@ func GetByRecipeName(c *gin.Context) {
 // @Summary GetAll
 // @Tags PublicRecipe
 // @Accept json
-// @Param page query int true "page"
-// @Param size query int true "size"
+// @Param page query int false "page"
+// @Param size query int false "size"
 // @Success 200 {object} response.APIResponseDTO{data=recipe.RecipeListResponseDTO} "desc"
 // @Router /api/public/recipe/getAll [get]
 func GetAll(c *gin.Context) {
