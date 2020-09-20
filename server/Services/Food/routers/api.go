@@ -2,6 +2,7 @@ package routers
 
 import (
 	CategoryResource "Food/controllers/categoryresource"
+	CommentResource "Food/controllers/commentresource"
 	ImageResource "Food/controllers/imageresource"
 	PostResource "Food/controllers/postresource"
 	RecipeResource "Food/controllers/reciperesource"
@@ -45,6 +46,10 @@ func InitRouterApi(r *gin.Engine) {
 			{
 				publicPostRoutes := publicRoutes.Group("/post")
 				publicPostRoutes.GET("", PostResource.GetAll)
+			}
+			{
+				publicCommentRoutes := publicRoutes.Group("/comment")
+				publicCommentRoutes.GET("/:postId", CommentResource.GetByPostID)
 			}
 		}
 
