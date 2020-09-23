@@ -14,6 +14,7 @@ import (
 // @Tags PrivatePost
 // @Accept json
 // @Security ApiKeyAuth
+// @Param body body post.PostCreateDTO true "body"
 // @Success 200 {object} response.APIResponseDTO{data=post.PostListResponseDTO} "desc"
 // @Router /api/private/post [post]
 func CreatePost(c *gin.Context) {
