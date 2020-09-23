@@ -26,6 +26,9 @@ func init() {
 // @version 1.0
 // @description An example of gin
 // @license.name MIT
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	gin.SetMode(config.ServerSetting.RunMode)
 

@@ -47,24 +47,28 @@ func Setup() {
 func Debug(v ...interface{}) {
 	setPrefix(DEBUG)
 	logger.Println(v...)
+	fmt.Println(v...)
 }
 
 // Info output logs at info level
 func Info(v ...interface{}) {
 	setPrefix(INFO)
 	logger.Println(v...)
+	fmt.Println(v...)
 }
 
 // Warn output logs at warn level
 func Warn(v ...interface{}) {
 	setPrefix(WARNING)
 	logger.Println(v...)
+	fmt.Println(v...)
 }
 
 // Error output logs at error level
 func Error(v ...interface{}) {
 	setPrefix(ERROR)
 	logger.Println(v...)
+	fmt.Println(v...)
 }
 
 // Fatal output logs at fatal level

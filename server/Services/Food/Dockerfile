@@ -4,10 +4,10 @@ RUN apk add --no-cache gcc musl-dev git make \
     && go get -u github.com/swaggo/swag/cmd/swag
 
 ENV GOPROXY https://goproxy.cn,direct
-ADD . $GOPATH/src/github.com/golang/smartHome
 WORKDIR $GOPATH/src/github.com/golang/smartHome
+ADD . .
 
-RUN rm -r $GOPATH/src/github.com/golang/smartHome/data
+RUN rm -r ./data
 
 EXPOSE 8080
 ENTRYPOINT ["make", "dev"]

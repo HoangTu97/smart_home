@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"Food/dto/response"
 	"Food/helpers/e"
 	"Food/helpers/util"
 	"strings"
@@ -17,8 +16,7 @@ func JWT(c *gin.Context) {
 	code = e.SUCCESS
 	token := c.Request.Header.Get("Authorization")
 	if len(token) == 0 {
-		response.CreateErrorResponse(c, e.GetMsg(e.INVALID_PARAMS))
-		c.Abort()
+		c.Next()
 		return
 	}
 	token = strings.Fields(token)[1]
@@ -34,8 +32,7 @@ func JWT(c *gin.Context) {
 	}
 
 	if code != e.SUCCESS {
-		response.CreateErrorResponse(c, e.GetMsg(code))
-		c.Abort()
+		c.Next()
 		return
 	}
 

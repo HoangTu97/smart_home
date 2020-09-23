@@ -1,4 +1,4 @@
-package postresource
+package PostResource
 
 import (
 	"Food/dto/response"

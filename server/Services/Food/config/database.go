@@ -20,13 +20,14 @@ var DB *gorm.DB
 
 // Setup initializes the database instance
 func SetupDB() {
-	db, err := gorm.Open(postgres.New(postgres.Config{
+	dialector := postgres.New(postgres.Config{
 		DSN: fmt.Sprintf("host=%s user=%s password=%s dbname=%s ",
 			DatabaseSetting.Host,
 			DatabaseSetting.User,
 			DatabaseSetting.Password,
 			DatabaseSetting.Name),
-	}), &gorm.Config{})
+	})
+	db, err := gorm.Open(dialector, &gorm.Config{})
 	if err != nil {
 		log.Fatalf("models.Setup err: %v", err)
 	}
