@@ -36,3 +36,12 @@ func FindOneUserLogin(username string, password string) (dto.UserDTO, bool) {
 
 	return mapper.ToUserDTO(user), true
 }
+
+func FindOneUserByUserID(userId string) (dto.UserDTO, bool) {
+	user, err := repository.FineOneUserByUserId(userId)
+	if err != nil {
+		return dto.UserDTO{}, false
+	}
+
+	return mapper.ToUserDTO(user), true
+}

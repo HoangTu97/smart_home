@@ -2,8 +2,8 @@ package mapper
 
 import (
 	"Food/dto"
+	"Food/helpers/converter"
 	"Food/models"
-	"strings"
 )
 
 func ToRecipeDTO(entity models.Recipe) dto.RecipeDTO {
@@ -16,7 +16,7 @@ func ToRecipeDTO(entity models.Recipe) dto.RecipeDTO {
 		Image:       entity.Image,
 		Description: entity.Description,
 		Duration:    entity.Duration,
-		Photos:      strings.Split(entity.Photos, ","),
+		Photos:      converter.MustArrStr(entity.Photos),
 	}
 }
 
@@ -30,7 +30,7 @@ func ToRecipe(dto dto.RecipeDTO) models.Recipe {
 		Image:       dto.Image,
 		Description: dto.Description,
 		Duration:    dto.Duration,
-		Photos:      strings.Join(dto.Photos, ","),
+		Photos:      converter.ToStr(dto.Photos),
 	}
 }
 

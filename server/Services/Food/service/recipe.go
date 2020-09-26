@@ -2,12 +2,22 @@ package service
 
 import (
 	"Food/dto"
-	"Food/models"
 	"Food/helpers/page"
 	"Food/helpers/pagination"
+	"Food/models"
 	"Food/repository"
 	"Food/service/mapper"
 )
+
+func SaveRecipe(recipeDTO dto.RecipeDTO) (dto.RecipeDTO, bool) {
+	recipe := mapper.ToRecipe(recipeDTO)
+	var err error
+	recipe, err = repository.SaveRecipe(recipe)
+	if err != nil {
+		return recipeDTO, false
+	}
+	return mapper.ToRecipeDTO(recipe), true
+}
 
 // FindPageByCateID return page models.Recipe
 func FindPageRecipeByCateID(cateID uint, pageable pagination.Pageable) page.Page {

@@ -2,10 +2,18 @@ package repository
 
 import (
 	"Food/config"
-	"Food/models"
 	"Food/helpers/page"
 	"Food/helpers/pagination"
+	"Food/models"
 )
+
+func SaveRecipe(recipe models.Recipe) (models.Recipe, error) {
+	result := config.GetDB().Save(&recipe)
+	if result.Error != nil {
+		return recipe, result.Error
+	}
+	return recipe, nil
+}
 
 func FindAllRecipe() []models.Recipe {
 	var recipes []models.Recipe

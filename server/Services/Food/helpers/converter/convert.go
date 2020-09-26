@@ -2,6 +2,7 @@ package converter
 
 import (
 	"strconv"
+	"strings"
 )
 
 func Exist(f string) bool {
@@ -66,6 +67,10 @@ func Float64(f string) (float64, error) {
 func Bool(f string) (bool, error) {
 	v, err := strconv.ParseBool(MustString(f))
 	return v, err
+}
+
+func ArrStr(f string) ([]string, error) {
+	return strings.Split(f, ","), nil
 }
 
 // // HexStr2int converts hex format string to decimal number.

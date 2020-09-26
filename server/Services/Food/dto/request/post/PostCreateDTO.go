@@ -1,8 +1,12 @@
-package post
+package PostRequest
 
-type PostCreateDTO struct {
-	Photo       string   `json:"photo"`
+type PostCreateRequestDTO struct {
 	Description string   `json:"description"`
 	HashTags    []string `json:"tags"`
-	RecipeID    uint     `json:"recipeId"`
+
+	RecipeImage       string   `json:"recipeImage"`
+	RecipeName        string   `json:"recipeName"`
+	RecipeDuration    uint32   `json:"recipeDuration"`
+	RecipeIngredients []string `json:"recipeIngredients"`
+	RecipeSteps       []string `json:"recipeSteps"`
 }

@@ -2,15 +2,15 @@ package repository
 
 import (
 	"Food/config"
-	"Food/models"
 	"Food/helpers/page"
 	"Food/helpers/pagination"
+	"Food/models"
 )
 
 func SaveCate(category models.Category) (models.Category, error) {
 	result := config.GetDB().Save(&category)
 	if result.Error != nil {
-		return models.Category{}, result.Error
+		return category, result.Error
 	}
 	return category, nil
 }

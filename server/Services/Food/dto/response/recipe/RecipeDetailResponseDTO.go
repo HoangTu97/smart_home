@@ -1,8 +1,8 @@
 package recipe
 
 import (
+	"Food/helpers/converter"
 	"Food/models"
-	"strings"
 )
 
 // RecipeDetail_CateResponseDTO godoc
@@ -35,7 +35,7 @@ func CreateRecipeDetailResponseDTO(recipe models.Recipe) RecipeDetailResponseDTO
 	return RecipeDetailResponseDTO{
 		ID:          recipe.ID,
 		Title:       recipe.Name,
-		Photos:      strings.Split(recipe.Photos, ","),
+		Photos:      converter.MustArrStr(recipe.Photos),
 		Duration:    recipe.Duration,
 		Description: recipe.Description,
 		Categories:  cates,

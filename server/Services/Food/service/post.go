@@ -8,6 +8,16 @@ import (
 	"Food/service/mapper"
 )
 
+func SavePost(postDTO dto.PostDTO) (dto.PostDTO, bool) {
+	post := mapper.ToPost(postDTO)
+	var err error
+	post, err = repository.SavePost(post)
+	if err != nil {
+		return postDTO, false
+	}
+	return mapper.ToPostDTO(post), true
+}
+
 func FindOnePost(id uint) (dto.PostDTO, bool) {
 	post, err := repository.FindOnePost(id)
 	if err != nil {

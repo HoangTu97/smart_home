@@ -3,6 +3,7 @@ package converter
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 type argInt []int
@@ -49,6 +50,8 @@ func ToStr(value interface{}, args ...int) (s string) {
 		s = v
 	case []byte:
 		s = string(v)
+	case []string:
+		s = strings.Join(v, ",")
 	default:
 		s = fmt.Sprintf("%v", v)
 	}

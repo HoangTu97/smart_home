@@ -2,8 +2,8 @@ package mapper
 
 import (
 	"Food/dto"
+	"Food/helpers/converter"
 	"Food/models"
-	"strings"
 )
 
 func ToPostDTO(entity models.Post) dto.PostDTO {
@@ -15,7 +15,7 @@ func ToPostDTO(entity models.Post) dto.PostDTO {
 		Photo:       entity.Photo,
 		Description: entity.Description,
 		Type:        entity.Type,
-		HashTags:    strings.Split(entity.HashTags, ","),
+		HashTags:    converter.MustArrStr(entity.HashTags),
 		UserID:      entity.UserID,
 		RecipeID:    entity.RecipeID,
 	}
@@ -30,7 +30,7 @@ func ToPost(dto dto.PostDTO) models.Post {
 		Photo:       dto.Photo,
 		Description: dto.Description,
 		Type:        dto.Type,
-		HashTags:    strings.Join(dto.HashTags, ","),
+		HashTags:    converter.ToStr(dto.HashTags),
 		UserID:      dto.UserID,
 		RecipeID:    dto.RecipeID,
 	}

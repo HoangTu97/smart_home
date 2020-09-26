@@ -46,3 +46,11 @@ func MustBool(f string) bool {
 	v, _ := Bool(f)
 	return v
 }
+
+func MustArrStr(f string) []string {
+	if !Exist(f) {
+		return []string{}
+	}
+	v, _ := ArrStr(f)
+	return v
+}

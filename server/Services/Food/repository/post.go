@@ -11,9 +11,12 @@ import (
 	"encoding/json"
 )
 
-func SavePost(post models.Post) models.Post {
-	config.GetDB().Create(&post)
-	return post
+func SavePost(post models.Post) (models.Post, error) {
+	result := config.GetDB().Save(&post)
+	if result.Error != nil {
+		return post, result.Error
+	}
+	return post, nil
 }
 
 func FindOnePost(id uint) (models.Post, error) {
