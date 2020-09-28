@@ -43,7 +43,7 @@ func FindPageRecipeByCateID(cateID uint, pageable pagination.Pageable) page.Page
 	var recipes []models.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Model(&models.Category{ID: cateID}).Association("Recipes").DB.Find(&recipes).Preload("Categories"),
+        DB:      config.GetDB().Model(&models.Category{ID: cateID}).Joins("Recipes").Joins("Categories").Find(&recipes),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -57,7 +57,7 @@ func FindPageRecipeByCates(cates []models.Category, pageable pagination.Pageable
 	var recipes []models.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Model(&cates).Association("Recipes").DB,
+        DB:      config.GetDB().Model(&cates).Joins("Recipes"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},
@@ -113,7 +113,7 @@ func FindPageRecipe(pageable pagination.Pageable) page.Page {
 	var recipes []models.Recipe
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Preload("Categories"),
+        DB:      config.GetDB().Joins("Categories"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
         OrderBy: []string{"id desc"},

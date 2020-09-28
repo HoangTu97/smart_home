@@ -1,18 +1,20 @@
 package models
 
 import (
-	"gorm.io/gorm"
-	uuid "github.com/satori/go.uuid"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 // User entity
 type User struct {
-	ID       uint      `gorm:"primary_key"`
-	UserID   uuid.UUID `gorm:"type:uuid;index:user_id"`
-	Name     string    `gorm:"type:varchar(255)"`
-	Address  string    `gorm:"type:varchar(255)"`
-	Password string    `gorm:"type:varchar(255)" json:"Password"`
+	ID       uint            `gorm:"primary_key"`
+	UserID   uuid.UUID       `gorm:"type:uuid;index:user_id"`
+	Name     string          `gorm:"type:varchar(255)"`
+	Password string          `gorm:"type:varchar(255)" json:"Password"`
+	Address  string          `gorm:"type:varchar(255)"`
+	Roles    string `gorm:"type:varchar(255)"`
 
 	// features
 	Age        uint8

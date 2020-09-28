@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"Food/dto/response"
-	"Food/helpers/util"
+	"Food/helpers/security"
 	"regexp"
 
 	"github.com/gin-gonic/gin"
@@ -24,7 +24,7 @@ func Security(c *gin.Context) {
 			return
 		}
 
-		userInfo := iUserInfo.(*util.Token)
+		userInfo := iUserInfo.(*security.Token)
 		if err := userInfo.Valid(); err != nil {
 			response.CreateErrorResponse(c, "INVALID_TOKEN")
 			c.Abort()

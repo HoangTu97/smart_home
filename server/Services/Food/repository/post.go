@@ -32,6 +32,7 @@ func FindOnePost(id uint) (models.Post, error) {
 		_ = json.Unmarshal(data, &post)
 		return post, nil
 	}
+
 	result := config.GetDB().First(&post, id)
 	if result.Error != nil {
 		return models.Post{}, result.Error
@@ -45,10 +46,9 @@ func FindPagePost(pageable pagination.Pageable) page.Page {
 	var posts []models.Post
 
 	paginator := pagination.Paging(&pagination.Param{
-        DB:      config.GetDB().Preload("User").Preload("Recipe"),
+        DB:      config.GetDB().Joins("User").Joins("Recipe"),
         Page:    pageable.GetPageNumber(),
         Limit:   pageable.GetPageSize(),
-        OrderBy: []string{"id desc"},
         ShowSQL: true,
 	}, &posts)
 

@@ -1,6 +1,7 @@
-package util
+package security
 
 import (
+	"Food/helpers/util"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -9,22 +10,21 @@ import (
 var jwtSecret []byte
 
 type Token struct {
-	UserID   string `json:"userId"`
-	Name     string `json:"name"`
-	Password string `json:"password"`
-	Roles    []string `json:"roles"`
+	UserID string              `json:"userId"`
+	Name   string              `json:"name"`
+	Roles  []UserRole `json:"roles"`
 	*jwt.StandardClaims
 }
 
 // GenerateToken generate tokens used for auth
-func GenerateToken(userID string, username string, password string) (string, error) {
+func GenerateToken(userID string, username string, roles []UserRole) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 
 	claims := Token{
 		UserID: userID,
-		Name: EncodeMD5(username),
-		Password: EncodeMD5(password),
+		Name:   util.EncodeMD5(username),
+		Roles:  roles,
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "gin-blog",
@@ -52,10 +52,10 @@ func ParseToken(token string) (*Token, error) {
 	return nil, err
 }
 
-func (t *Token) GetUserID() (string) {
+func (t *Token) GetUserID() string {
 	return t.UserID
 }
 
-func (t *Token) GetUserName() (string) {
+func (t *Token) GetUserName() string {
 	return t.Name
 }

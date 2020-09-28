@@ -3,6 +3,7 @@ package service
 import (
 	"Food/dto"
 	"Food/helpers/logging"
+	"Food/helpers/security"
 	"Food/repository"
 	"Food/service/mapper"
 
@@ -16,6 +17,7 @@ func CreateUser(userDTO dto.UserDTO) (dto.UserDTO, bool) {
 		return dto.UserDTO{}, false
 	}
 	userDTO.Password = string(pass)
+	userDTO.Roles = append(userDTO.Roles, security.ROLE_USER)
 
 	user := mapper.ToUser(userDTO)
 	repository.SaveUser(user)

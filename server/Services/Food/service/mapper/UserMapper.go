@@ -2,12 +2,21 @@ package mapper
 
 import (
 	"Food/dto"
+	"Food/helpers/converter"
+	"Food/helpers/security"
 	"Food/models"
 
 	uuid "github.com/satori/go.uuid"
 )
 
 func ToUserDTO(entity models.User) dto.UserDTO {
+	roleStrings, _ := converter.ArrStr(entity.Roles)
+	roles := make([]security.UserRole, len(roleStrings))
+	for i, r := range roleStrings {
+		ro, _ := security.ParseUserRole(r)
+		roles[i] = ro
+	}
+
 	return dto.UserDTO{
 		ID:         entity.ID,
 		UserID:     entity.UserID.String(),
@@ -16,6 +25,7 @@ func ToUserDTO(entity models.User) dto.UserDTO {
 		DeletedAt:  entity.DeletedAt,
 		Name:       entity.Name,
 		Password:   entity.Password,
+		Roles:      roles,
 		Address:    entity.Address,
 		Age:        entity.Age,
 		Gender:     entity.Gender,
@@ -32,6 +42,11 @@ func ToUser(dto dto.UserDTO) models.User {
 		id = uuid.Must(uuid.FromString(dto.UserID))
 	}
 
+	roles := make([]string, len(dto.Roles))
+	for i, r := range dto.Roles {
+		roles[i] = r.String()
+	}
+
 	return models.User{
 		ID:         dto.ID,
 		UserID:     id,
@@ -40,6 +55,7 @@ func ToUser(dto dto.UserDTO) models.User {
 		DeletedAt:  dto.DeletedAt,
 		Name:       dto.Name,
 		Password:   dto.Password,
+		Roles:      converter.ToStr(roles),
 		Address:    dto.Address,
 		Age:        dto.Age,
 		Gender:     dto.Gender,

@@ -8,7 +8,7 @@ import (
 	"Food/dto/response/user"
 	"Food/helpers/e"
 	"Food/helpers/logging"
-	"Food/helpers/util"
+	"Food/helpers/security"
 	"Food/service"
 
 	"github.com/gin-gonic/gin"
@@ -61,7 +61,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	tokenString, error := util.GenerateToken(userDTO.UserID, userDTO.Name, userDTO.Password)
+	tokenString, error := security.GenerateToken(userDTO.UserID, userDTO.Name, userDTO.Roles)
 	if error != nil {
 		logging.Error("Signed token error: ", error)
 	}

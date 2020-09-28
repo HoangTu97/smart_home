@@ -10,7 +10,7 @@ import (
 	"Food/config"
 	"Food/helpers/gredis"
 	"Food/helpers/logging"
-	"Food/helpers/util"
+	"Food/helpers/security"
 	"Food/routers"
 )
 
@@ -19,13 +19,12 @@ func init() {
 	config.SetupDB()
 	logging.Setup()
 	gredis.Setup()
-	util.Setup()
+	security.Setup()
 }
 
-// @title Golang Gin API
+// @title Food API
 // @version 1.0
 // @description An example of gin
-// @license.name MIT
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization

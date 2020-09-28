@@ -1,14 +1,18 @@
 package dto
 
-import "time"
+import (
+	"Food/helpers/security"
+	"time"
+)
 
 // UserDTO godoc
 type UserDTO struct {
 	ID       uint
 	UserID   string
 	Name     string
-	Address  string
 	Password string
+	Roles    []security.UserRole
+	Address  string
 
 	// features
 	Age        uint8

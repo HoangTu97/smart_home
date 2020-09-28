@@ -32,18 +32,18 @@ services:
     environment: 
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-  food_app:
-    build:
-      dockerfile: Dockerfile
-      context: ./
-    hostname: food_app
-    depends_on: 
-      - redis
-      - db
-    networks: 
-      - backend
-    ports:
-      - "8080:8080"
+  # food_app:
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./
+  #   hostname: food_app
+  #   depends_on: 
+  #     - redis
+  #     - db
+  #   networks: 
+  #     - backend
+  #   ports:
+  #     - "8080:8080"
 
 networks:
   backend:
