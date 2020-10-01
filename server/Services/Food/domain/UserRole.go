@@ -1,6 +1,7 @@
-package security
+package domain
 
 import (
+	"Food/helpers/constants"
 	"database/sql/driver"
 	"fmt"
 )
@@ -13,8 +14,8 @@ const (
 )
 
 var _roleNames = []string{
-	"ROLE_USER",
-	"ROLE_ADMIN",
+	constants.ROLE_USER,
+	constants.ROLE_ADMIN,
 }
 
 func (role UserRole) String() string {

@@ -58,6 +58,14 @@ func ToStr(value interface{}, args ...int) (s string) {
 	return s
 }
 
+func ToStrs(values []interface{}, args ...int) []string {
+	arr := make([]string, len(values))
+	for i, value := range values {
+		arr[i] = ToStr(value, args...)
+	}
+	return arr
+}
+
 // Int2HexStr converts decimal number to hex format string.
 func Int2HexStr(num int) (hex string) {
 	if num == 0 {

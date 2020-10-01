@@ -2,10 +2,9 @@ package middlewares
 
 import (
 	"Food/helpers/e"
-	"Food/helpers/security"
+	"Food/helpers/jwt"
 	"strings"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,14 +20,9 @@ func JWT(c *gin.Context) {
 	}
 	token = strings.Fields(token)[1]
 
-	parsedToken, err := security.ParseToken(token)
+	parsedToken, err := jwt.ParseToken(token)
 	if err != nil {
-		switch err.(*jwt.ValidationError).Errors {
-		case jwt.ValidationErrorExpired:
-			code = e.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
-		default:
-			code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
-		}
+		code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
 	}
 
 	if code != e.SUCCESS {

@@ -7,6 +7,7 @@ import (
 	PostResource "Food/controllers/postresource"
 	RecipeResource "Food/controllers/reciperesource"
 	UserResource "Food/controllers/userresource"
+	"Food/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -57,6 +58,7 @@ func InitRouterApi(r *gin.Engine) {
 	{
 		privateRoutes := apiRoutes.Group("/private")
 		{
+			privateRoutes.Use(middlewares.Authenticated)
 			privatePostRoutes := privateRoutes.Group("/post")
 			privatePostRoutes.POST("", PostResource.CreatePost)
 		}

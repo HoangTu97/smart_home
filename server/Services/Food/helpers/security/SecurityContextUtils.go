@@ -1,11 +1,13 @@
 package security
 
 import (
+	"Food/domain"
+
 	"github.com/gin-gonic/gin"
 )
 
-func GetUserInfo(c *gin.Context) *Token {
-	return c.MustGet("UserInfo").(*Token)
+func GetUserInfo(c *gin.Context) *domain.Token {
+	return c.MustGet("UserInfo").(*domain.Token)
 }
 
 func GetUserName(c *gin.Context) string {

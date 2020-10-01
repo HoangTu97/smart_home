@@ -1,9 +1,9 @@
 package mapper
 
 import (
+	"Food/domain"
 	"Food/dto"
 	"Food/helpers/converter"
-	"Food/helpers/security"
 	"Food/models"
 
 	uuid "github.com/satori/go.uuid"
@@ -11,9 +11,9 @@ import (
 
 func ToUserDTO(entity models.User) dto.UserDTO {
 	roleStrings, _ := converter.ArrStr(entity.Roles)
-	roles := make([]security.UserRole, len(roleStrings))
+	roles := make([]domain.UserRole, len(roleStrings))
 	for i, r := range roleStrings {
-		ro, _ := security.ParseUserRole(r)
+		ro, _ := domain.ParseUserRole(r)
 		roles[i] = ro
 	}
 

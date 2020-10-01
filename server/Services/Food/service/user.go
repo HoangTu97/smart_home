@@ -1,9 +1,9 @@
 package service
 
 import (
+	"Food/domain"
 	"Food/dto"
 	"Food/helpers/logging"
-	"Food/helpers/security"
 	"Food/repository"
 	"Food/service/mapper"
 
@@ -17,7 +17,7 @@ func CreateUser(userDTO dto.UserDTO) (dto.UserDTO, bool) {
 		return dto.UserDTO{}, false
 	}
 	userDTO.Password = string(pass)
-	userDTO.Roles = append(userDTO.Roles, security.ROLE_USER)
+	userDTO.Roles = append(userDTO.Roles, domain.ROLE_USER)
 
 	user := mapper.ToUser(userDTO)
 	repository.SaveUser(user)
@@ -30,7 +30,7 @@ func FindOneUserLogin(username string, password string) (dto.UserDTO, bool) {
 	if err != nil {
 		return dto.UserDTO{}, false
 	}
-	
+
 	errf := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if errf != nil && errf == bcrypt.ErrMismatchedHashAndPassword {
 		return dto.UserDTO{}, false

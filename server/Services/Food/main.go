@@ -9,8 +9,8 @@ import (
 
 	"Food/config"
 	"Food/helpers/gredis"
+	"Food/helpers/jwt"
 	"Food/helpers/logging"
-	"Food/helpers/security"
 	"Food/routers"
 )
 
@@ -19,7 +19,7 @@ func init() {
 	config.SetupDB()
 	logging.Setup()
 	gredis.Setup()
-	security.Setup()
+	jwt.Setup()
 }
 
 // @title Food API

@@ -19,10 +19,11 @@ require (
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.7
-	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
-	golang.org/x/tools v0.0.0-20200918232735-d647fc253266 // indirect
+	golang.org/x/crypto v0.0.0-20200930160638-afb6bcd081ae
+	golang.org/x/net v0.0.0-20200930145003-4acb6c075d10 // indirect
+	golang.org/x/tools v0.0.0-20200930213115-e57f6d466a48 // indirect
 	gopkg.in/ini.v1 v1.61.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
-	gorm.io/driver/postgres v1.0.1
-	gorm.io/gorm v1.20.1
+	gorm.io/driver/postgres v1.0.2
+	gorm.io/gorm v1.20.2
 )

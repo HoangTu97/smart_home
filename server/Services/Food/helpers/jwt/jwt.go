@@ -1,6 +1,7 @@
-package security
+package jwt
 
 import (
+	"Food/domain"
 	"Food/helpers/util"
 	"time"
 
@@ -9,19 +10,12 @@ import (
 
 var jwtSecret []byte
 
-type Token struct {
-	UserID string              `json:"userId"`
-	Name   string              `json:"name"`
-	Roles  []UserRole `json:"roles"`
-	*jwt.StandardClaims
-}
-
 // GenerateToken generate tokens used for auth
-func GenerateToken(userID string, username string, roles []UserRole) (string, error) {
+func GenerateToken(userID string, username string, roles []string) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 
-	claims := Token{
+	claims := domain.Token{
 		UserID: userID,
 		Name:   util.EncodeMD5(username),
 		Roles:  roles,
@@ -38,24 +32,16 @@ func GenerateToken(userID string, username string, roles []UserRole) (string, er
 }
 
 // ParseToken parsing token
-func ParseToken(token string) (*Token, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &Token{}, func(token *jwt.Token) (interface{}, error) {
+func ParseToken(token string) (*domain.Token, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &domain.Token{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
 
 	if tokenClaims != nil {
-		if claims, ok := tokenClaims.Claims.(*Token); ok && tokenClaims.Valid {
+		if claims, ok := tokenClaims.Claims.(*domain.Token); ok && tokenClaims.Valid {
 			return claims, nil
 		}
 	}
 
 	return nil, err
-}
-
-func (t *Token) GetUserID() string {
-	return t.UserID
-}
-
-func (t *Token) GetUserName() string {
-	return t.Name
 }
