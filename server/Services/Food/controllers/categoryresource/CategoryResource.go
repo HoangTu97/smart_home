@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Param page query int false "page"
 // @Param size query int false "size"
-// @Success 200 {object} response.APIResponseDTO{data=category.CategoryListResponseDTO{items=category.CategoryListItemResponseDTO{}}} "desc"
+// @Success 200 {object} response.APIResponseDTO{data=category.CategoryListResponseDTO} "desc"
 // @Router /api/public/category/getAll [get]
 func GetAll(c *gin.Context) {
 	pageable := pagination.GetPage(c)
@@ -26,8 +26,21 @@ func GetAll(c *gin.Context) {
 	response.CreateSuccesResponse(c, category.CreateCategoryListResponseDTOFromPage(page))
 }
 
+// GetAllMini all mini
+// @Summary GetAllMini
+// @Tags PublicCategory
+// @Accept json
+// @Success 200 {object} response.APIResponseDTO{data=category.CategoryMiniListResponseDTO "desc"
+// @Router /api/public/category/getAll [get]
+func GetAllMini(c *gin.Context) {
+	categoryDTOS := service.FindAllCate()
+
+	response.CreateSuccesResponse(c, categoryDTOS)
+}
+
 func GetByID(c *gin.Context) {
 	id := converter.MustUint(c.Param("id"))
+
 	categoryDTO, isExist := service.FindOneCate(id)
 	if !isExist {
 		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
@@ -43,6 +56,7 @@ func GetByID(c *gin.Context) {
 
 func GetNameByID(c *gin.Context) {
 	id := converter.MustUint(c.Param("id"))
+
 	categoryDTO, isExist := service.FindOneCate(id)
 	if !isExist {
 		response.CreateErrorResponse(c, "CATEGORY_NOT_FOUND")
@@ -50,6 +64,6 @@ func GetNameByID(c *gin.Context) {
 	}
 
 	response.CreateSuccesResponse(c, &category.CategoryNameResponseDTO{
-		Name:  categoryDTO.Name,
+		Name: categoryDTO.Name,
 	})
 }
